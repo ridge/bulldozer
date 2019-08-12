@@ -55,7 +55,7 @@ func ListOpenPullRequestsForRef(ctx context.Context, client *github.Client, owne
 
 	for _, openPR := range openPRs {
 		formattedRef := fmt.Sprintf("refs/heads/%s", openPR.GetBase().GetRef())
-		logger.Debug().Msgf("found open pull request with base ref %s", formattedRef)
+		logger.Debug().Msgf("found open pull request %d with base ref %s", openPR.GetID(), formattedRef)
 		if formattedRef == ref {
 			results = append(results, openPR)
 		}

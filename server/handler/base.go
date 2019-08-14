@@ -54,7 +54,7 @@ func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, cli
 	case bulldozerConfig.Missing():
 		logger.Debug().Msgf("No configuration found for %s", bulldozerConfig)
 	case bulldozerConfig.Invalid():
-		logger.Warn().Msgf("Configuration is invalid for %s", bulldozerConfig)
+		logger.Warn().Msgf("Configuration is invalid for %s %+v", bulldozerConfig, bulldozerConfig.Error)
 	default:
 		logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
 		config := *bulldozerConfig.Config

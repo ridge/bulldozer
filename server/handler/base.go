@@ -33,43 +33,59 @@ type Base struct {
 	PushRestrictionUserToken string
 }
 
-func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, pr *github.PullRequest) error {
+func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, client *github.Client, pr *github.PullRequest) (*bulldozer.FetchedConfig, error) {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := b.ConfigForPR(ctx, client, pr)
+	config, err := configFetcher.ConfigForPR(ctx, client, pr)
 	if err != nil {
-		return errors.Wrap(err, "failed to fetch configuration")
+		return nil, errors.Wrap(err, "failed to fetch configuration")
 	}
 
 	switch {
-	case bulldozerConfig.Missing():
-		logger.Debug().Msgf("No configuration found for %s", bulldozerConfig)
-	case bulldozerConfig.Invalid():
-		logger.Warn().Msgf("Configuration is invalid for %s %+v", bulldozerConfig, bulldozerConfig.Error)
+	case config.Missing():
+		logger.Debug().Msgf("No configuration found for %s", config)
+		return nil, nil
+	case config.Invalid():
+		logger.Warn().Msgf("Configuration is invalid for %s %+v", config, config.Error)
+		return nil, nil
 	default:
-		logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
-		config := *bulldozerConfig.Config
+		return &config, nil
+	}
+}
 
-		shouldMerge, err := bulldozer.ShouldMergePR(ctx, pullCtx, config.Merge)
+func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, pr *github.PullRequest) error {
+	logger := zerolog.Ctx(ctx)
+
+	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pr)
+	if err != nil {
+		return errors.Wrap(err, "failed to fetch configuration")
+	}
+	if bulldozerConfig == nil {
+		return nil
+	}
+
+	logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
+	config := *bulldozerConfig.Config
+
+	shouldMerge, err := bulldozer.ShouldMergePR(ctx, pullCtx, config.Merge)
+	if err != nil {
+		return errors.Wrap(err, "unable to determine merge status")
+	}
+	if !shouldMerge {
+		return nil
+	}
+
+	merger := bulldozer.NewGitHubMerger(client)
+	if b.PushRestrictionUserToken != "" {
+		tokenClient, err := b.NewTokenClient(b.PushRestrictionUserToken)
 		if err != nil {
-			return errors.Wrap(err, "unable to determine merge status")
+			return errors.Wrap(err, "failed to create token client")
 		}
-		if !shouldMerge {
-			return nil
-		}
+		merger = bulldozer.NewPushRestrictionMerger(merger, bulldozer.NewGitHubMerger(tokenClient))
+	}
 
-		merger := bulldozer.NewGitHubMerger(client)
-		if b.PushRestrictionUserToken != "" {
-			tokenClient, err := b.NewTokenClient(b.PushRestrictionUserToken)
-			if err != nil {
-				return errors.Wrap(err, "failed to create token client")
-			}
-			merger = bulldozer.NewPushRestrictionMerger(merger, bulldozer.NewGitHubMerger(tokenClient))
-		}
-
-		if err := bulldozer.MergePR(ctx, pullCtx, merger, config.Merge); err != nil {
-			return errors.Wrap(err, "failed to merge pull request")
-		}
+	if err := bulldozer.MergePR(ctx, pullCtx, merger, config.Merge); err != nil {
+		return errors.Wrap(err, "failed to merge pull request")
 	}
 
 	return nil

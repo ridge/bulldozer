@@ -48,6 +48,7 @@ func refreshRepo(ctx context.Context, serverConfig *handler.ServerConfig, repo *
 }
 
 func refresh(serverConfig *handler.ServerConfig, clientCreator githubapp.ClientCreator, logger zerolog.Logger) {
+	logger.Info().Msgf("Refreshing existing PRs")
 	appClient, err := clientCreator.NewAppClient()
 	if err != nil {
 		logger.Warn().Err(errors.WithStack(err)).Msg("Error creating GH app client in refresh")
@@ -81,4 +82,5 @@ func refresh(serverConfig *handler.ServerConfig, clientCreator githubapp.ClientC
 
 		logger.Debug().Msgf("Finished handling installation %d", installation.ID)
 	}
+	logger.Info().Msgf("Finished refreshing existing PRs")
 }

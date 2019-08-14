@@ -20,6 +20,7 @@ import (
 	"net/http"
 
 	"github.com/google/go-github/github"
+	"github.com/palantir/bulldozer/pull"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"gopkg.in/yaml.v2"
@@ -67,11 +68,11 @@ func NewConfigFetcher(configurationV1Path string, configurationV0Paths []string,
 // only if the existence of the configuration file could not be determined. If the file
 // does not exist or is invalid, the returned error is nil and the appropriate
 // fields are set on the FetchedConfig.
-func (cf *ConfigFetcher) ConfigForPR(ctx context.Context, client *github.Client, pr *github.PullRequest) (FetchedConfig, error) {
+func (cf *ConfigFetcher) ConfigForPR(ctx context.Context, client *github.Client, pullCtx pull.Context) (FetchedConfig, error) {
 	fc := FetchedConfig{
-		Owner: pr.GetBase().GetRepo().GetOwner().GetLogin(),
-		Repo:  pr.GetBase().GetRepo().GetName(),
-		Ref:   pr.GetBase().GetRef(),
+		Owner: pullCtx.BaseOwner(),
+		Repo:  pullCtx.BaseRepo(),
+		Ref:   pullCtx.BaseRef(),
 	}
 
 	logger := zerolog.Ctx(ctx)

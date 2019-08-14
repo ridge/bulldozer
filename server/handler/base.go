@@ -33,10 +33,10 @@ type Base struct {
 	PushRestrictionUserToken string
 }
 
-func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, client *github.Client, pr *github.PullRequest) (*bulldozer.FetchedConfig, error) {
+func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, client *github.Client, pullCtx pull.Context) (*bulldozer.FetchedConfig, error) {
 	logger := zerolog.Ctx(ctx)
 
-	config, err := configFetcher.ConfigForPR(ctx, client, pr)
+	config, err := configFetcher.ConfigForPR(ctx, client, pullCtx)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to fetch configuration")
 	}
@@ -53,10 +53,10 @@ func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, clie
 	}
 }
 
-func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, pr *github.PullRequest) error {
+func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client) error {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pr)
+	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pullCtx)
 	if err != nil {
 		return errors.Wrap(err, "failed to fetch configuration")
 	}
@@ -91,10 +91,10 @@ func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, cli
 	return nil
 }
 
-func (b *Base) UpdatePullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, pr *github.PullRequest, baseRef string) error {
+func (b *Base) UpdatePullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, baseRef string) error {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := b.ConfigForPR(ctx, client, pr)
+	bulldozerConfig, err := b.ConfigForPR(ctx, client, pullCtx)
 	if err != nil {
 		return errors.Wrap(err, "failed to fetch configuration")
 	}

@@ -50,6 +50,10 @@ type Context interface {
 	// The base branch will always be unprefixed.
 	Branches() (base string, head string)
 
+	BaseOwner() string
+	BaseRepo() string
+	BaseRef() string
+
 	// MergeState returns the current mergability of the pull request. It
 	// always returns the most up-to-date state possible.
 	MergeState(ctx context.Context) (*MergeState, error)

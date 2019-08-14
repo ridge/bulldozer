@@ -262,6 +262,18 @@ func (ghc *GithubContext) Branches() (base string, head string) {
 	return
 }
 
+func (ghc *GithubContext) BaseOwner() string {
+	return ghc.pr.GetBase().GetRepo().GetOwner().GetLogin()
+}
+
+func (ghc *GithubContext) BaseRepo() string {
+	return ghc.pr.GetBase().GetRepo().GetName()
+}
+
+func (ghc *GithubContext) BaseRef() string {
+	return ghc.pr.GetBase().GetRef()
+}
+
 func (ghc *GithubContext) Labels(ctx context.Context) ([]string, error) {
 	var labelNames []string
 	for _, label := range ghc.pr.Labels {

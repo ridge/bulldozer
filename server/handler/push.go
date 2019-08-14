@@ -77,11 +77,11 @@ func (h *Push) Handle(ctx context.Context, eventType, deliveryID string, payload
 		logger := logger.With().Int(githubapp.LogKeyPRNum, pr.GetNumber()).Logger()
 
 		logger.Debug().Msgf("checking status for updated sha %s", baseRef)
-		if err := h.UpdatePullRequest(logger.WithContext(ctx), pullCtx, client, pr, baseRef); err != nil {
+		if err := h.UpdatePullRequest(logger.WithContext(ctx), pullCtx, client, baseRef); err != nil {
 			logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
 		}
 
-		if err := h.ProcessPullRequest(ctx, pullCtx, client, pr); err != nil {
+		if err := h.ProcessPullRequest(ctx, pullCtx, client); err != nil {
 			logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 		}
 	}

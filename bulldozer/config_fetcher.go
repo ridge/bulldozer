@@ -85,7 +85,7 @@ func (cf *ConfigFetcher) ConfigForPR(ctx context.Context, client *github.Client,
 			return fc, nil
 		}
 	}
-	logger.Debug().Msgf("v1 configuration was missing or invalid, falling back to v0 or server configuration")
+	logger.Debug().Err(err).Msgf("v1 configuration was missing or invalid, falling back to v0 or server configuration")
 
 	for _, configV0Path := range cf.configurationV0Paths {
 		bytes, err := cf.fetchConfigContents(ctx, client, fc.Owner, fc.Repo, fc.Ref, configV0Path)

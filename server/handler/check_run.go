@@ -73,7 +73,7 @@ func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, pay
 		pullCtx := pull.NewGithubContext(client, fullPR)
 
 		logger := logger.With().Int(githubapp.LogKeyPRNum, pr.GetNumber()).Logger()
-		if err := ProcessPullRequest(logger.WithContext(ctx), h.Config, pullCtx, client); err != nil {
+		if err := ProcessPullRequest(logger.WithContext(ctx), h.Config, pullCtx, client, fullPR.GetBase().GetRef()); err != nil {
 			logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 		}
 	}

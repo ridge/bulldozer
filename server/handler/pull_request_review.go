@@ -57,12 +57,8 @@ func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID st
 	}
 	pullCtx := pull.NewGithubContext(client, pr)
 
-	if err := UpdatePullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
+	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
 		logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
-	}
-
-	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client); err != nil {
-		logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 	}
 
 	return nil

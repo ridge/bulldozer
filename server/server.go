@@ -33,8 +33,11 @@ import (
 )
 
 type Server struct {
-	config *Config
-	base   *baseapp.Server
+	config        *Config
+	base          *baseapp.Server
+	clientCreator githubapp.ClientCreator
+	serverConfig  *handler.ServerConfig
+	logger        zerolog.Logger
 }
 
 // New instantiates a new Server.
@@ -95,8 +98,11 @@ func New(c *Config) (*Server, error) {
 	mux.Handle(pat.Get("/api/health"), handler.Health())
 
 	return &Server{
-		config: c,
-		base:   base,
+		config:        c,
+		base:          base,
+		serverConfig:  serverConfig,
+		clientCreator: clientCreator,
+		logger:        logger,
 	}, nil
 }
 
@@ -107,5 +113,6 @@ func (s *Server) Start() error {
 			return err
 		}
 	}
+	go refresh(s.serverConfig, s.clientCreator, s.logger)
 	return s.base.Start()
 }

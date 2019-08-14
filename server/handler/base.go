@@ -94,30 +94,28 @@ func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, cli
 func (b *Base) UpdatePullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, baseRef string) error {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := b.ConfigForPR(ctx, client, pullCtx)
+	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pullCtx)
 	if err != nil {
 		return errors.Wrap(err, "failed to fetch configuration")
 	}
+	if bulldozerConfig == nil {
+		return nil
+	}
 
-	switch {
-	case bulldozerConfig.Missing():
-		logger.Debug().Msgf("No configuration found for %s", bulldozerConfig)
-	case bulldozerConfig.Invalid():
-		logger.Warn().Msgf("Configuration is invalid for %s", bulldozerConfig)
-	default:
-		logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
-		config := *bulldozerConfig.Config
+	logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
+	config := *bulldozerConfig.Config
 
-		shouldUpdate, err := bulldozer.ShouldUpdatePR(ctx, pullCtx, config.Update)
-		if err != nil {
-			return errors.Wrap(err, "unable to determine update status")
-		}
+	shouldUpdate, err := bulldozer.ShouldUpdatePR(ctx, pullCtx, config.Update)
+	if err != nil {
+		return errors.Wrap(err, "unable to determine update status")
+	}
 
-		if shouldUpdate {
-			if err := bulldozer.UpdatePR(ctx, pullCtx, client, config.Update, baseRef); err != nil {
-				return errors.Wrap(err, "failed to update pull request")
-			}
-		}
+	if !shouldUpdate {
+		return nil
+	}
+
+	if err := bulldozer.UpdatePR(ctx, pullCtx, client, config.Update, baseRef); err != nil {
+		return errors.Wrap(err, "failed to update pull request")
 	}
 
 	return nil

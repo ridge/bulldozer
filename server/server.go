@@ -70,7 +70,7 @@ func New(c *Config) (*Server, error) {
 		return nil, errors.Wrap(err, "failed to initialize Github client creator")
 	}
 
-	baseHandler := handler.Base{
+	serverConfig := &handler.ServerConfig{
 		ClientCreator: clientCreator,
 		ConfigFetcher: bulldozer.NewConfigFetcher(c.Options.ConfigurationPath, c.Options.ConfigurationV0Paths, c.Options.DefaultRepositoryConfig),
 
@@ -78,12 +78,12 @@ func New(c *Config) (*Server, error) {
 	}
 
 	webhookHandler := githubapp.NewDefaultEventDispatcher(c.Github,
-		&handler.CheckRun{Base: baseHandler},
-		&handler.IssueComment{Base: baseHandler},
-		&handler.PullRequest{Base: baseHandler},
-		&handler.PullRequestReview{Base: baseHandler},
-		&handler.Push{Base: baseHandler},
-		&handler.Status{Base: baseHandler},
+		&handler.CheckRun{Config: serverConfig},
+		&handler.IssueComment{Config: serverConfig},
+		&handler.PullRequest{Config: serverConfig},
+		&handler.PullRequestReview{Config: serverConfig},
+		&handler.Push{Config: serverConfig},
+		&handler.Status{Config: serverConfig},
 	)
 
 	mux := base.Mux()

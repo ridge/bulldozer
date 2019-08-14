@@ -26,14 +26,14 @@ import (
 	"github.com/palantir/bulldozer/pull"
 )
 
-type Base struct {
+type ServerConfig struct {
 	githubapp.ClientCreator
 	bulldozer.ConfigFetcher
 
 	PushRestrictionUserToken string
 }
 
-func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, client *github.Client, pullCtx pull.Context) (*bulldozer.FetchedConfig, error) {
+func FindPRConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, client *github.Client, pullCtx pull.Context) (*bulldozer.FetchedConfig, error) {
 	logger := zerolog.Ctx(ctx)
 
 	config, err := configFetcher.ConfigForPR(ctx, client, pullCtx)
@@ -53,10 +53,10 @@ func FindConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, clie
 	}
 }
 
-func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client) error {
+func ProcessPullRequest(ctx context.Context, serverConfig *ServerConfig, pullCtx pull.Context, client *github.Client) error {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pullCtx)
+	bulldozerConfig, err := FindPRConfig(ctx, serverConfig.ConfigFetcher, client, pullCtx)
 	if err != nil {
 		return errors.Wrap(err, "failed to fetch configuration")
 	}
@@ -76,8 +76,8 @@ func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, cli
 	}
 
 	merger := bulldozer.NewGitHubMerger(client)
-	if b.PushRestrictionUserToken != "" {
-		tokenClient, err := b.NewTokenClient(b.PushRestrictionUserToken)
+	if serverConfig.PushRestrictionUserToken != "" {
+		tokenClient, err := serverConfig.NewTokenClient(serverConfig.PushRestrictionUserToken)
 		if err != nil {
 			return errors.Wrap(err, "failed to create token client")
 		}
@@ -91,10 +91,10 @@ func (b *Base) ProcessPullRequest(ctx context.Context, pullCtx pull.Context, cli
 	return nil
 }
 
-func (b *Base) UpdatePullRequest(ctx context.Context, pullCtx pull.Context, client *github.Client, baseRef string) error {
+func UpdatePullRequest(ctx context.Context, serverConfig *ServerConfig, pullCtx pull.Context, client *github.Client, baseRef string) error {
 	logger := zerolog.Ctx(ctx)
 
-	bulldozerConfig, err := FindConfig(ctx, b.ConfigFetcher, client, pullCtx)
+	bulldozerConfig, err := FindPRConfig(ctx, serverConfig.ConfigFetcher, client, pullCtx)
 	if err != nil {
 		return errors.Wrap(err, "failed to fetch configuration")
 	}

@@ -26,7 +26,7 @@ import (
 )
 
 type CheckRun struct {
-	Base
+	Config *ServerConfig
 }
 
 func (h *CheckRun) Handles() []string {
@@ -50,7 +50,7 @@ func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, pay
 		return nil
 	}
 
-	client, err := h.ClientCreator.NewInstallationClient(installationID)
+	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
 		return errors.Wrap(err, "failed to instantiate github client")
 	}
@@ -73,7 +73,7 @@ func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, pay
 		pullCtx := pull.NewGithubContext(client, fullPR)
 
 		logger := logger.With().Int(githubapp.LogKeyPRNum, pr.GetNumber()).Logger()
-		if err := h.ProcessPullRequest(logger.WithContext(ctx), pullCtx, client); err != nil {
+		if err := ProcessPullRequest(logger.WithContext(ctx), h.Config, pullCtx, client); err != nil {
 			logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 		}
 	}

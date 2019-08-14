@@ -26,7 +26,7 @@ import (
 )
 
 type PullRequestReview struct {
-	Base
+	Config *ServerConfig
 }
 
 func (h *PullRequestReview) Handles() []string {
@@ -46,7 +46,7 @@ func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID st
 	installationID := githubapp.GetInstallationIDFromEvent(&event)
 	ctx, logger := githubapp.PreparePRContext(ctx, installationID, repo, number)
 
-	client, err := h.ClientCreator.NewInstallationClient(installationID)
+	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
 		return errors.Wrap(err, "failed to instantiate github client")
 	}
@@ -57,11 +57,11 @@ func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID st
 	}
 	pullCtx := pull.NewGithubContext(client, pr)
 
-	if err := h.UpdatePullRequest(ctx, pullCtx, client, pr.GetBase().GetRef()); err != nil {
+	if err := UpdatePullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
 		logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
 	}
 
-	if err := h.ProcessPullRequest(ctx, pullCtx, client); err != nil {
+	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client); err != nil {
 		logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 	}
 

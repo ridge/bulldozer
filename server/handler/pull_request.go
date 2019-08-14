@@ -26,7 +26,7 @@ import (
 )
 
 type PullRequest struct {
-	Base
+	Config *ServerConfig
 }
 
 func (h *PullRequest) Handles() []string {
@@ -51,7 +51,7 @@ func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, 
 		return nil
 	}
 
-	client, err := h.ClientCreator.NewInstallationClient(installationID)
+	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
 		return errors.Wrap(err, "failed to instantiate github client")
 	}
@@ -62,11 +62,11 @@ func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, 
 	}
 	pullCtx := pull.NewGithubContext(client, pr)
 
-	if err := h.UpdatePullRequest(ctx, pullCtx, client, pr.GetBase().GetRef()); err != nil {
+	if err := UpdatePullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
 		logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
 	}
 
-	if err := h.ProcessPullRequest(ctx, pullCtx, client); err != nil {
+	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client); err != nil {
 		logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
 	}
 

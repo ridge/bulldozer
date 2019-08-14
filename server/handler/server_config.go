@@ -53,21 +53,21 @@ func FindPRConfig(ctx context.Context, configFetcher bulldozer.ConfigFetcher, cl
 	}
 }
 
-func UpdatePullRequest(ctx context.Context, serverConfig *ServerConfig, prConfig bulldozer.Config, pullCtx pull.Context, client *github.Client, baseRef string) (bool, error) {
+func UpdatePullRequest(ctx context.Context, serverConfig *ServerConfig, prConfig bulldozer.Config, pullCtx pull.Context, client *github.Client, baseRef string) error {
 	shouldUpdate, err := bulldozer.ShouldUpdatePR(ctx, pullCtx, prConfig.Update)
 	if err != nil {
-		return false, errors.Wrap(err, "unable to determine update status")
+		return errors.Wrap(err, "unable to determine update status")
 	}
 
 	if !shouldUpdate {
-		return false, nil
+		return nil
 	}
 
 	if err := bulldozer.UpdatePR(ctx, pullCtx, client, prConfig.Update, baseRef); err != nil {
-		return false, errors.Wrap(err, "failed to update pull request")
+		return errors.Wrap(err, "failed to update pull request")
 	}
 
-	return true, nil
+	return nil
 }
 
 func MergePullRequest(ctx context.Context, serverConfig *ServerConfig, prConfig bulldozer.Config, pullCtx pull.Context, client *github.Client) error {
@@ -109,13 +109,8 @@ func ProcessPullRequest(ctx context.Context, serverConfig *ServerConfig, pullCtx
 	logger.Debug().Msgf("Found valid configuration for %s", bulldozerConfig)
 	prConfig := *bulldozerConfig.Config
 
-	updated, err := UpdatePullRequest(ctx, serverConfig, prConfig, pullCtx, client, baseRef)
-	if err != nil {
-		return err
-	}
-
-	if updated {
-		return nil
+	if err := UpdatePullRequest(ctx, serverConfig, prConfig, pullCtx, client, baseRef); err != nil {
+		logger.Error().Err(err).Msg("Update failed")
 	}
 
 	return MergePullRequest(ctx, serverConfig, prConfig, pullCtx, client)

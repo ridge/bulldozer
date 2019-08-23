@@ -141,12 +141,16 @@ func retargetDependentPullRequests(ctx context.Context, pullCtx pull.Context, me
 		return err
 	}
 
+	allErrs := []string{}
 	for _, pr := range prs {
 		if err := merger.ChangeBase(ctx, pullCtx, pr); err != nil {
-			return err
+			allErrs = append(allErrs, fmt.Sprintf("cannot retarget PR %d: %v", pullCtx.Number(), err))
 		}
 	}
 
+	if len(allErrs) > 0 {
+		return errors.New(strings.Join(allErrs, ", "))
+	}
 	return nil
 }
 

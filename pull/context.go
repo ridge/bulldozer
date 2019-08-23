@@ -16,6 +16,8 @@ package pull
 
 import (
 	"context"
+
+	"github.com/google/go-github/github"
 )
 
 // Context is the context for a pull request. It defines methods to get
@@ -78,6 +80,9 @@ type Context interface {
 
 	// Labels lists all labels on the pull request.
 	Labels(ctx context.Context) ([]string, error)
+
+	// PullRequestsForBranch returns the list open pull requests targeting the branch of this pull request
+	PullRequestsForBranch(ctx context.Context) ([]*github.PullRequest, error)
 
 	// IsTargeted returns true if the head branch of this pull request is the
 	// target branch of other open PRs on the repository.

@@ -12,6 +12,7 @@ merge:
     squash:
       body: summarize_commits
   delete_after_merge: true
+  retarget_dependent_pull_requests: true
 
 update:
   whitelist:

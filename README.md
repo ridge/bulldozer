@@ -145,6 +145,10 @@ merge:
   # If true, bulldozer will delete branches after their pull requests merge.
   delete_after_merge: true
 
+  # If true, bulldozer will retarget other PRs based off the pull request's branch to the pull request's base.
+  # Only meaningful if delete_after_merge is true.
+  retarget_dependent_pull_requests: true
+
 # "update" defines how and when to update pull request branches. Unlike with
 # merges, if this section is missing, bulldozer will not update any pull requests.
 update:

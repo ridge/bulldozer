@@ -36,7 +36,8 @@ type MergeConfig struct {
 	Whitelist Signals `yaml:"whitelist"`
 	Blacklist Signals `yaml:"blacklist"`
 
-	DeleteAfterMerge bool `yaml:"delete_after_merge"`
+	DeleteAfterMerge              bool `yaml:"delete_after_merge"`
+	RetargetDependentPullRequests bool `yaml:"retarget_dependent_pull_requests"`
 
 	Method  MergeMethod  `yaml:"method"`
 	Options MergeOptions `yaml:"options"`

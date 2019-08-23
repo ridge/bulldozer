@@ -38,6 +38,9 @@ type Merger interface {
 
 	// DeleteHead deletes the head branch of the pull request in the context.
 	DeleteHead(ctx context.Context, pullCtx pull.Context) error
+
+	// ChangeBase changes the base of a dependent PR to a base of main PR
+	ChangeBase(ctx context.Context, pullCtx pull.Context, dependentPR *github.PullRequest) error
 }
 
 type CommitMessage struct {
@@ -73,6 +76,17 @@ func (m *GitHubMerger) DeleteHead(ctx context.Context, pullCtx pull.Context) err
 	_, head := pullCtx.Branches()
 	_, err := m.client.Git.DeleteRef(ctx, pullCtx.Owner(), pullCtx.Repo(), fmt.Sprintf("refs/heads/%s", head))
 	return errors.WithStack(err)
+}
+
+func (m *GitHubMerger) ChangeBase(ctx context.Context, pullCtx pull.Context, dependentPR *github.PullRequest) error {
+	base, _ := pullCtx.Branches()
+	edit := &github.PullRequest{Base: &github.PullRequestBranch{Ref: &base}}
+
+	dependentPullCtx := pull.NewGithubContext(m.client, dependentPR)
+
+	_, _, err := m.client.PullRequests.Edit(ctx, dependentPullCtx.Owner(),
+		dependentPullCtx.Repo(), dependentPullCtx.Number(), edit)
+	return err
 }
 
 // PushRestrictionMerger delegates merge operations to different Mergers based
@@ -115,6 +129,25 @@ func (m *PushRestrictionMerger) DeleteHead(ctx context.Context, pullCtx pull.Con
 		return m.Restricted.DeleteHead(ctx, pullCtx)
 	}
 	return m.Normal.DeleteHead(ctx, pullCtx)
+}
+
+func (m *PushRestrictionMerger) ChangeBase(ctx context.Context, pullCtx pull.Context, dependentPR *github.PullRequest) error {
+	return m.Normal.ChangeBase(ctx, pullCtx, dependentPR)
+}
+
+func retargetDependentPullRequests(ctx context.Context, pullCtx pull.Context, merger Merger) error {
+	prs, err := pullCtx.PullRequestsForBranch(ctx)
+	if err != nil {
+		return err
+	}
+
+	for _, pr := range prs {
+		if err := merger.ChangeBase(ctx, pullCtx, pr); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // MergePR spawns a goroutine that attempts to merge a pull request. It returns
@@ -225,8 +258,15 @@ func MergePR(ctx context.Context, pullCtx pull.Context, merger Merger, mergeConf
 						return
 					}
 					if isTargeted {
-						logger.Info().Msgf("Unable to delete ref %s after merging %q because there are open PRs against this ref", ref, pullCtx.Locator())
-						return
+						if mergeConfig.RetargetDependentPullRequests {
+							if err := retargetDependentPullRequests(ctx, pullCtx, merger); err != nil {
+								logger.Error().Err(err).Msgf("Failed to retarget dependent PRs for ref %s", ref)
+								return
+							}
+						} else {
+							logger.Info().Msgf("Unable to delete ref %s after merging %q because there are open PRs against this ref", ref, pullCtx.Locator())
+							return
+						}
 					}
 
 					logger.Info().Msgf("Attempting to delete ref %s", ref)

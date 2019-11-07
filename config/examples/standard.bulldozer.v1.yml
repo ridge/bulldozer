@@ -17,3 +17,4 @@ merge:
 update:
   whitelist:
     labels: ["wip", "update me"]
+  draft_update: true

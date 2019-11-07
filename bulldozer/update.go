@@ -29,6 +29,10 @@ import (
 func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig UpdateConfig) (bool, error) {
 	logger := zerolog.Ctx(ctx)
 
+	if !updateConfig.DraftUpdate && pullCtx.IsDraft() {
+		return false, nil
+	}
+
 	if !updateConfig.Blacklist.Enabled() && !updateConfig.Whitelist.Enabled() {
 		return false, nil
 	}

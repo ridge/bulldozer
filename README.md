@@ -170,6 +170,10 @@ update:
   # of required statuses in branch protection rules will not be used.
   required_statuses:
     - "code-review/reviewable"
+
+  # "draft_update" controls whether to update draft PRs or not, defaults to
+  # false.
+  draft_update: false
 ```
 
 ## FAQ

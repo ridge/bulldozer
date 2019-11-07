@@ -65,6 +65,8 @@ type UpdateConfig struct {
 
 	// Status checks to require for update
 	RequiredStatuses []string `yaml:"required_statuses"`
+
+	DraftUpdate bool `yaml:"draft_update"`
 }
 
 type Config struct {

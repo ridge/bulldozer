@@ -167,7 +167,8 @@ func (c *clientCreator) NewAppClient() (*github.Client, error) {
 	base := &http.Client{Transport: http.DefaultTransport}
 
 	installation, transportError := newAppInstallation(c.integrationID, c.privKeyBytes, c.v3BaseURL)
-	middleware := append(c.middleware, installation)
+	middleware := append([]ClientMiddleware{}, c.middleware...)
+	middleware = append(middleware, installation)
 	if c.cacheFunc != nil {
 		middleware = append(middleware, cache(c.cacheFunc), cacheControl(c.alwaysValidate))
 	}
@@ -189,7 +190,8 @@ func (c *clientCreator) NewAppV4Client() (*githubv4.Client, error) {
 
 	// The v4 API primarily uses POST requests (except for introspection queries)
 	// which we cannot cache, so don't construct the middleware
-	middleware := append(c.middleware, installation)
+	middleware := append([]ClientMiddleware{}, c.middleware...)
+	middleware = append(middleware, installation)
 
 	client, err := c.newV4Client(base, middleware, "application", 0)
 	if err != nil {
@@ -205,7 +207,8 @@ func (c *clientCreator) NewInstallationClient(installationID int64) (*github.Cli
 	base := &http.Client{Transport: http.DefaultTransport}
 
 	installation, transportError := newInstallation(c.integrationID, int(installationID), c.privKeyBytes, c.v3BaseURL)
-	middleware := append(c.middleware, installation)
+	middleware := append([]ClientMiddleware{}, c.middleware...)
+	middleware = append(middleware, installation)
 	if c.cacheFunc != nil {
 		middleware = append(middleware, cache(c.cacheFunc), cacheControl(c.alwaysValidate))
 	}
@@ -227,7 +230,8 @@ func (c *clientCreator) NewInstallationV4Client(installationID int64) (*githubv4
 
 	// The v4 API primarily uses POST requests (except for introspection queries)
 	// which we cannot cache, so don't construct the middleware
-	middleware := append(c.middleware, installation)
+	middleware := append([]ClientMiddleware{}, c.middleware...)
+	middleware = append(middleware, installation)
 
 	client, err := c.newV4Client(base, middleware, fmt.Sprintf("installation: %d", installationID), installationID)
 	if err != nil {

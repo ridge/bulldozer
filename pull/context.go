@@ -89,7 +89,7 @@ type Context interface {
 	IsTargeted(ctx context.Context) (bool, error)
 
 	// IsDraft returns true if the PR is in draft state
-	IsDraft(ctx context.Context) (bool, error)
+	IsDraft() (bool, error)
 }
 
 type MergeState struct {

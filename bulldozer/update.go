@@ -19,11 +19,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v28/github"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/palantir/bulldozer/pull"
+	"github.com/ridge/bulldozer/pull"
 )
 
 func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig UpdateConfig) (bool, error) {

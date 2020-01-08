@@ -22,14 +22,14 @@ import (
 	"github.com/gregjones/httpcache"
 	"github.com/palantir/go-baseapp/baseapp"
 	"github.com/palantir/go-baseapp/baseapp/datadog"
-	"github.com/palantir/go-githubapp/githubapp"
 	"github.com/pkg/errors"
+	"github.com/ridge/go-githubapp/githubapp"
 	"github.com/rs/zerolog"
 	"goji.io/pat"
 
-	"github.com/palantir/bulldozer/bulldozer"
-	"github.com/palantir/bulldozer/server/handler"
-	"github.com/palantir/bulldozer/version"
+	"github.com/ridge/bulldozer/bulldozer"
+	"github.com/ridge/bulldozer/server/handler"
+	"github.com/ridge/bulldozer/version"
 )
 
 type Server struct {

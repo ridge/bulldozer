@@ -3,11 +3,11 @@ package server
 import (
 	"context"
 
-	"github.com/google/go-github/github"
-	"github.com/palantir/bulldozer/pull"
-	"github.com/palantir/bulldozer/server/handler"
-	"github.com/palantir/go-githubapp/githubapp"
+	"github.com/google/go-github/v28/github"
 	"github.com/pkg/errors"
+	"github.com/ridge/bulldozer/pull"
+	"github.com/ridge/bulldozer/server/handler"
+	"github.com/ridge/go-githubapp/githubapp"
 	"github.com/rs/zerolog"
 )
 

@@ -20,7 +20,7 @@ import (
 
 	"github.com/palantir/go-baseapp/pkg/errfmt"
 
-	"github.com/palantir/bulldozer/cmd"
+	"github.com/ridge/bulldozer/cmd"
 )
 
 func main() {

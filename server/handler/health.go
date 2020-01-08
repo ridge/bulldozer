@@ -19,7 +19,7 @@ import (
 
 	"github.com/palantir/go-baseapp/baseapp"
 
-	"github.com/palantir/bulldozer/version"
+	"github.com/ridge/bulldozer/version"
 )
 
 type HealthCheck struct {

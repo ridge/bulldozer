@@ -17,7 +17,7 @@ package pull
 import (
 	"context"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v28/github"
 )
 
 // Context is the context for a pull request. It defines methods to get

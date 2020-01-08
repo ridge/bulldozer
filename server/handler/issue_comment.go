@@ -18,11 +18,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/google/go-github/github"
-	"github.com/palantir/go-githubapp/githubapp"
+	"github.com/google/go-github/v28/github"
 	"github.com/pkg/errors"
+	"github.com/ridge/go-githubapp/githubapp"
 
-	"github.com/palantir/bulldozer/pull"
+	"github.com/ridge/bulldozer/pull"
 )
 
 type IssueComment struct {

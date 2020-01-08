@@ -21,7 +21,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 
-	"github.com/palantir/bulldozer/pull"
+	"github.com/ridge/bulldozer/pull"
 )
 
 // IsPRBlacklisted returns true if the PR is identified as blacklisted,

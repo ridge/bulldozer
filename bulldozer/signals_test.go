@@ -21,8 +21,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/palantir/bulldozer/pull"
-	"github.com/palantir/bulldozer/pull/pulltest"
+	"github.com/ridge/bulldozer/pull"
+	"github.com/ridge/bulldozer/pull/pulltest"
 )
 
 func TestSignalsMatches(t *testing.T) {

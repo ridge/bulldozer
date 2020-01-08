@@ -296,7 +296,7 @@ func (ghc *GithubContext) IsTargeted(ctx context.Context) (bool, error) {
 	return len(prs) > 0, nil
 }
 
-func (ghc *GithubContext) IsDraft() {
+func (ghc *GithubContext) IsDraft() bool {
 	return ghc.pr.GetDraft()
 }
 

@@ -56,6 +56,8 @@ type MockPullContext struct {
 
 	IsTargetedValue    bool
 	IsTargetedErrValue error
+
+	IsDraftValue bool
 }
 
 func (c *MockPullContext) Owner() string {
@@ -119,6 +121,10 @@ func (c *MockPullContext) Labels(ctx context.Context) ([]string, error) {
 
 func (c *MockPullContext) IsTargeted(ctx context.Context) (bool, error) {
 	return c.IsTargetedValue, c.IsTargetedErrValue
+}
+
+func (c *MockPullContext) IsDraft() bool {
+	return c.IsDraftValue
 }
 
 // type assertion

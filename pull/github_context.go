@@ -282,14 +282,22 @@ func (ghc *GithubContext) Labels(ctx context.Context) ([]string, error) {
 	return labelNames, nil
 }
 
-func (ghc *GithubContext) IsTargeted(ctx context.Context) (bool, error) {
+func (ghc *GithubContext) PullRequestsForBranch(ctx context.Context) ([]*github.PullRequest, error) {
 	ref := fmt.Sprintf("refs/heads/%s", ghc.pr.GetHead().GetRef())
 
-	prs, err := ListOpenPullRequestsForRef(ctx, ghc.client, ghc.owner, ghc.repo, ref)
+	return ListOpenPullRequestsForRef(ctx, ghc.client, ghc.owner, ghc.repo, ref)
+}
+
+func (ghc *GithubContext) IsTargeted(ctx context.Context) (bool, error) {
+	prs, err := ghc.PullRequestsForBranch(ctx)
 	if err != nil {
 		return false, errors.Wrap(err, "failed to determine targeted status")
 	}
 	return len(prs) > 0, nil
+}
+
+func (ghc *GithubContext) IsDraft() {
+	return ghc.pr.GetDraft()
 }
 
 // type assertion

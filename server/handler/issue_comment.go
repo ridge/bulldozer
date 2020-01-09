@@ -34,6 +34,8 @@ func (h *IssueComment) Handles() []string {
 }
 
 func (h *IssueComment) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	ctx = context.Background()
+
 	var event github.IssueCommentEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
 		return errors.Wrap(err, "failed to parse issue comment payload")

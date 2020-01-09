@@ -34,6 +34,8 @@ func (h *PullRequest) Handles() []string {
 }
 
 func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	ctx = context.Background()
+
 	var event github.PullRequestEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
 		return errors.Wrap(err, "failed to parse pull request event payload")

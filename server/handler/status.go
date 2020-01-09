@@ -34,6 +34,8 @@ func (h *Status) Handles() []string {
 }
 
 func (h *Status) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	ctx = context.Background()
+
 	var event github.StatusEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
 		return errors.Wrap(err, "failed to parse status event payload")

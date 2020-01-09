@@ -34,6 +34,8 @@ func (h *CheckRun) Handles() []string {
 }
 
 func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	ctx = context.Background()
+
 	var event github.CheckRunEvent
 
 	if err := json.Unmarshal(payload, &event); err != nil {

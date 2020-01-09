@@ -34,6 +34,8 @@ func (h *PullRequestReview) Handles() []string {
 }
 
 func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	ctx = context.Background()
+
 	var event github.PullRequestReviewEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
 		return errors.Wrap(err, "failed to parse pull request review event payload")

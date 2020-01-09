@@ -33,13 +33,8 @@ func (h *Push) Handles() []string {
 	return []string{"push"}
 }
 
-func (h *Push) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
-	ctx = context.Background()
-
-	var event github.PushEvent
-	if err := json.Unmarshal(payload, &event); err != nil {
-		return errors.Wrap(err, "failed to parse push event payload")
-	}
+func handlePush(config *ServerConfig, event github.PushEvent) {
+	ctx := context.Background()
 
 	repo := event.GetRepo()
 	owner := repo.GetOwner().GetLogin()
@@ -57,21 +52,23 @@ func (h *Push) Handle(ctx context.Context, eventType, deliveryID string, payload
 
 	ctx, logger := githubapp.PrepareRepoContext(ctx, installationID, ghRepo)
 
-	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
+	client, err := config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
-		return errors.Wrap(err, "failed to instantiate github client")
+		logger.Error().Err(err).Msg("failed to instantiate github client")
+		return
 	}
 
 	prs, err := pull.ListOpenPullRequestsForRef(ctx, client, owner, repoName, baseRef)
 	if err != nil {
-		return errors.Wrap(err, "failed to determine open pull requests matching the push change")
+		logger.Error().Err(err).Msg("failed to determine open pull requests matching the push change")
+		return
 	}
 
 	logger.Debug().Msgf("received push event with base ref %s", baseRef)
 
 	if len(prs) == 0 {
 		logger.Debug().Msg("Doing nothing since push event affects no open pull requests")
-		return nil
+		return
 	}
 
 	for _, pr := range prs {
@@ -79,10 +76,19 @@ func (h *Push) Handle(ctx context.Context, eventType, deliveryID string, payload
 		logger := logger.With().Int(githubapp.LogKeyPRNum, pr.GetNumber()).Logger()
 
 		logger.Debug().Msgf("checking status for updated sha %s", baseRef)
-		if err := ProcessPullRequest(logger.WithContext(ctx), h.Config, pullCtx, client, baseRef); err != nil {
-			logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
+		if err := ProcessPullRequest(logger.WithContext(ctx), config, pullCtx, client, baseRef); err != nil {
+			logger.Error().Err(err).Msg("Error updating pull request")
 		}
 	}
+}
+
+func (h *Push) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	var event github.PushEvent
+	if err := json.Unmarshal(payload, &event); err != nil {
+		return errors.Wrap(err, "failed to parse push event payload")
+	}
+
+	go handlePush(h.Config, event)
 
 	return nil
 }

@@ -33,13 +33,8 @@ func (h *PullRequestReview) Handles() []string {
 	return []string{"pull_request_review"}
 }
 
-func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
-	ctx = context.Background()
-
-	var event github.PullRequestReviewEvent
-	if err := json.Unmarshal(payload, &event); err != nil {
-		return errors.Wrap(err, "failed to parse pull request review event payload")
-	}
+func handlePullRequestReview(config *ServerConfig, event github.PullRequestReviewEvent) {
+	ctx := context.Background()
 
 	repo := event.GetRepo()
 	owner := repo.GetOwner().GetLogin()
@@ -48,20 +43,32 @@ func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID st
 	installationID := githubapp.GetInstallationIDFromEvent(&event)
 	ctx, logger := githubapp.PreparePRContext(ctx, installationID, repo, number)
 
-	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
+	client, err := config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
-		return errors.Wrap(err, "failed to instantiate github client")
+		logger.Error().Err(err).Msg("failed to instantiate github client")
+		return
 	}
 
 	pr, _, err := client.PullRequests.Get(ctx, repo.GetOwner().GetLogin(), repo.GetName(), number)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get pull request %s/%s#%d", owner, repoName, number)
+		logger.Error().Err(err).Msgf("failed to get pull request %s/%s#%d", owner, repoName, number)
+		return
 	}
 	pullCtx := pull.NewGithubContext(client, pr)
 
-	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
-		logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
+	if err := ProcessPullRequest(ctx, config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
+		logger.Error().Err(err).Msg("Error updating pull request")
 	}
+
+}
+
+func (h *PullRequestReview) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	var event github.PullRequestReviewEvent
+	if err := json.Unmarshal(payload, &event); err != nil {
+		return errors.Wrap(err, "failed to parse pull request review event payload")
+	}
+
+	go handlePullRequestReview(h.Config, event)
 
 	return nil
 }

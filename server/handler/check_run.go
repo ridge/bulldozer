@@ -54,6 +54,7 @@ func handleCheckRun(config *ServerConfig, event github.CheckRunEvent) {
 	prs := event.GetCheckRun().PullRequests
 	if len(prs) == 0 {
 		logger.Debug().Msg("Doing nothing since status change event affects no open pull requests")
+		return
 	}
 
 	for _, pr := range prs {

@@ -33,12 +33,8 @@ func (h *CheckRun) Handles() []string {
 	return []string{"check_run"}
 }
 
-func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
-	var event github.CheckRunEvent
-
-	if err := json.Unmarshal(payload, &event); err != nil {
-		return errors.Wrap(err, "failed to parse check_run event payload")
-	}
+func handleCheckRun(config *ServerConfig, event github.CheckRunEvent) {
+	ctx := context.Background()
 
 	repo := event.GetRepo()
 	installationID := githubapp.GetInstallationIDFromEvent(&event)
@@ -47,18 +43,18 @@ func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, pay
 
 	if event.GetAction() != "completed" {
 		logger.Debug().Msgf("Doing nothing since check_run action was %q instead of 'completed'", event.GetAction())
-		return nil
 	}
 
-	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
+	client, err := config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
-		return errors.Wrap(err, "failed to instantiate github client")
+		logger.Error().Err(err).Msg("failed to instantiate github client")
+		return
 	}
 
 	prs := event.GetCheckRun().PullRequests
 	if len(prs) == 0 {
 		logger.Debug().Msg("Doing nothing since status change event affects no open pull requests")
-		return nil
+		return
 	}
 
 	for _, pr := range prs {
@@ -68,15 +64,26 @@ func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, pay
 
 		fullPR, _, err := client.PullRequests.Get(ctx, repo.GetOwner().GetLogin(), repo.GetName(), pr.GetNumber())
 		if err != nil {
-			return errors.Wrapf(err, "failed to fetch PR number %q for CheckRun", pr.GetNumber())
+			logger.Error().Err(err).Msgf("failed to fetch PR number %q for CheckRun", pr.GetNumber())
+			continue
 		}
 		pullCtx := pull.NewGithubContext(client, fullPR)
 
 		logger := logger.With().Int(githubapp.LogKeyPRNum, pr.GetNumber()).Logger()
-		if err := ProcessPullRequest(logger.WithContext(ctx), h.Config, pullCtx, client, fullPR.GetBase().GetRef()); err != nil {
-			logger.Error().Err(errors.WithStack(err)).Msg("Error processing pull request")
+		if err := ProcessPullRequest(logger.WithContext(ctx), config, pullCtx, client, fullPR.GetBase().GetRef()); err != nil {
+			logger.Error().Err(err).Msg("Error processing pull request")
 		}
 	}
+}
+
+func (h *CheckRun) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	var event github.CheckRunEvent
+
+	if err := json.Unmarshal(payload, &event); err != nil {
+		return errors.Wrap(err, "failed to parse check_run event payload")
+	}
+
+	go handleCheckRun(h.Config, event)
 
 	return nil
 }

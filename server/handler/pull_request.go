@@ -33,11 +33,8 @@ func (h *PullRequest) Handles() []string {
 	return []string{"pull_request"}
 }
 
-func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
-	var event github.PullRequestEvent
-	if err := json.Unmarshal(payload, &event); err != nil {
-		return errors.Wrap(err, "failed to parse pull request event payload")
-	}
+func handlePullRequest(config *ServerConfig, event github.PullRequestEvent) {
+	ctx := context.Background()
 
 	repo := event.GetRepo()
 	owner := repo.GetOwner().GetLogin()
@@ -48,23 +45,35 @@ func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, 
 
 	if event.GetAction() == "closed" {
 		logger.Debug().Msg("Doing nothing since pull request is closed")
-		return nil
+		return
 	}
 
-	client, err := h.Config.ClientCreator.NewInstallationClient(installationID)
+	client, err := config.ClientCreator.NewInstallationClient(installationID)
 	if err != nil {
-		return errors.Wrap(err, "failed to instantiate github client")
+		logger.Error().Err(err).Msg("failed to instantiate github client")
+		return
 	}
 
 	pr, _, err := client.PullRequests.Get(ctx, owner, repoName, number)
 	if err != nil {
-		return errors.Wrapf(err, "failed to get pull request %s/%s#%d", owner, repoName, number)
+		logger.Error().Err(err).Msgf("failed to get pull request %s/%s#%d", owner, repoName, number)
+		return
 	}
 	pullCtx := pull.NewGithubContext(client, pr)
 
-	if err := ProcessPullRequest(ctx, h.Config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
-		logger.Error().Err(errors.WithStack(err)).Msg("Error updating pull request")
+	if err := ProcessPullRequest(ctx, config, pullCtx, client, pr.GetBase().GetRef()); err != nil {
+		logger.Error().Err(err).Msg("Error updating pull request")
 	}
+
+}
+
+func (h *PullRequest) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+	var event github.PullRequestEvent
+	if err := json.Unmarshal(payload, &event); err != nil {
+		return errors.Wrap(err, "failed to parse pull request event payload")
+	}
+
+	go handlePullRequest(h.Config, event)
 
 	return nil
 }

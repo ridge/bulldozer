@@ -30,6 +30,7 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 	logger := zerolog.Ctx(ctx)
 
 	if !updateConfig.DraftUpdate && pullCtx.IsDraft() {
+		logger.Debug().Msgf("%s is deemed not updateable because it is in draft stage", pullCtx.Locator())
 		return false, nil
 	}
 
@@ -40,7 +41,7 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 	if updateConfig.Blacklist.Enabled() {
 		blacklisted, reason, err := IsPRBlacklisted(ctx, pullCtx, updateConfig.Blacklist)
 		if err != nil {
-			return false, errors.Wrap(err, "failed to determine if pull request is blacklisted")
+			return false, errors.Wrapf(err, "failed to determine if pull request %s is blacklisted", pullCtx.Locator())
 		}
 		if blacklisted {
 			logger.Debug().Msgf("%s is deemed not updateable because blacklisting is enabled and %s", pullCtx.Locator(), reason)
@@ -51,7 +52,7 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 	if updateConfig.Whitelist.Enabled() {
 		whitelisted, reason, err := IsPRWhitelisted(ctx, pullCtx, updateConfig.Whitelist)
 		if err != nil {
-			return false, errors.Wrap(err, "failed to determine if pull request is whitelisted")
+			return false, errors.Wrapf(err, "failed to determine if pull request %s is whitelisted", pullCtx.Locator())
 		}
 		if !whitelisted {
 			logger.Debug().Msgf("%s is deemed not updateable because whitelisting is enabled and no whitelist signal detected", pullCtx.Locator())
@@ -64,7 +65,7 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 	if len(updateConfig.RequiredStatuses) > 0 {
 		successStatuses, err := pullCtx.CurrentSuccessStatuses(ctx)
 		if err != nil {
-			return false, errors.Wrap(err, "failed to determine currently successful status checks")
+			return false, errors.Wrapf(err, "failed to determine currently successful status checks for pull request %s", pullCtx.Locator())
 		}
 
 		unsatisfiedStatuses := setDifference(updateConfig.RequiredStatuses, successStatuses)
@@ -74,6 +75,8 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 			return false, nil
 		}
 	}
+
+	logger.Info().Msgf("%s is deemed updateable", pullCtx.Locator())
 
 	return true, nil
 }

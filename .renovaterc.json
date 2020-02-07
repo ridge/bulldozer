@@ -1,0 +1,5 @@
+{
+  "enabledManagers": ["gomod"],
+  "postUpdateOptions": ["gomodTidy"],
+  "labels": "pr-update"
+}

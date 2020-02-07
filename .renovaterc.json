@@ -1,0 +1,6 @@
+{
+  "extends": ["config:base"],
+  "enabledManagers": ["gomod"],
+  "postUpdateOptions": ["gomodTidy"],
+  "labels": ["pr-update"]
+}

@@ -20,7 +20,6 @@ import (
 
 	"github.com/google/go-github/v28/github"
 	"github.com/pkg/errors"
-	"github.com/rs/zerolog"
 )
 
 type pullRequestsService interface {
@@ -57,7 +56,6 @@ func ListOpenPullRequestsForRef(ctx context.Context, client *github.Client, owne
 
 func listOpenPullRequestsForRef(ctx context.Context, pullRequests pullRequestsService, owner, repoName, ref string) ([]*github.PullRequest, error) {
 	var results []*github.PullRequest
-	logger := zerolog.Ctx(ctx)
 
 	openPRs, err := listOpenPullRequests(ctx, pullRequests, owner, repoName)
 
@@ -69,16 +67,6 @@ func listOpenPullRequestsForRef(ctx context.Context, pullRequests pullRequestsSe
 		if fmt.Sprintf("refs/heads/%s", openPR.GetBase().GetRef()) == ref {
 			results = append(results, openPR)
 		}
-	}
-
-	if len(openPRs) > 0 {
-		msg := "found open pull requests:"
-		for _, openPR := range openPRs {
-			msg += fmt.Sprintf(" %d (%s)", openPR.GetNumber(), fmt.Sprintf("refs/heads/%s", openPR.GetBase().GetRef()))
-		}
-		logger.Debug().Msg(msg)
-	} else {
-		logger.Debug().Msg("found no open pull requests")
 	}
 
 	return results, nil

@@ -17,6 +17,6 @@ require (
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/stretchr/testify v1.3.0
-	goji.io v2.0.2+incompatible
+	goji.io/v3 v3.0.0
 	gopkg.in/yaml.v2 v2.2.4
 )

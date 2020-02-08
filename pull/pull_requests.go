@@ -23,12 +23,20 @@ import (
 	"github.com/rs/zerolog"
 )
 
+type pullRequestsService interface {
+	List(ctx context.Context, owner, repoName string, opts *github.PullRequestListOptions) ([]*github.PullRequest, *github.Response, error)
+}
+
 // ListOpenPullRequestsForSHA returns all pull requests where the HEAD of the source branch
 // in the pull request matches the given SHA.
 func ListOpenPullRequestsForSHA(ctx context.Context, client *github.Client, owner, repoName, SHA string) ([]*github.PullRequest, error) {
+	return listOpenPullRequestsForSHA(ctx, client.PullRequests, owner, repoName, SHA)
+}
+
+func listOpenPullRequestsForSHA(ctx context.Context, pullRequests pullRequestsService, owner, repoName, SHA string) ([]*github.PullRequest, error) {
 	var results []*github.PullRequest
 
-	openPRs, err := ListOpenPullRequests(ctx, client, owner, repoName)
+	openPRs, err := listOpenPullRequests(ctx, pullRequests, owner, repoName)
 
 	if err != nil {
 		return nil, err
@@ -44,10 +52,14 @@ func ListOpenPullRequestsForSHA(ctx context.Context, client *github.Client, owne
 }
 
 func ListOpenPullRequestsForRef(ctx context.Context, client *github.Client, owner, repoName, ref string) ([]*github.PullRequest, error) {
+	return listOpenPullRequestsForRef(ctx, client.PullRequests, owner, repoName, ref)
+}
+
+func listOpenPullRequestsForRef(ctx context.Context, pullRequests pullRequestsService, owner, repoName, ref string) ([]*github.PullRequest, error) {
 	var results []*github.PullRequest
 	logger := zerolog.Ctx(ctx)
 
-	openPRs, err := ListOpenPullRequests(ctx, client, owner, repoName)
+	openPRs, err := listOpenPullRequests(ctx, pullRequests, owner, repoName)
 
 	if err != nil {
 		return nil, err
@@ -73,6 +85,10 @@ func ListOpenPullRequestsForRef(ctx context.Context, client *github.Client, owne
 }
 
 func ListOpenPullRequests(ctx context.Context, client *github.Client, owner, repoName string) ([]*github.PullRequest, error) {
+	return listOpenPullRequests(ctx, client.PullRequests, owner, repoName)
+}
+
+func listOpenPullRequests(ctx context.Context, pullRequests pullRequestsService, owner, repoName string) ([]*github.PullRequest, error) {
 	var results []*github.PullRequest
 
 	opts := &github.PullRequestListOptions{
@@ -83,7 +99,7 @@ func ListOpenPullRequests(ctx context.Context, client *github.Client, owner, rep
 	}
 
 	for {
-		prs, resp, err := client.PullRequests.List(ctx, owner, repoName, opts)
+		prs, resp, err := pullRequests.List(ctx, owner, repoName, opts)
 		if err != nil {
 			return results, errors.Wrapf(err, "failed to list pull requests for repository %s/%s", owner, repoName)
 		}

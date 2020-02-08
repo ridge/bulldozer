@@ -17,6 +17,7 @@ package pulltest
 import (
 	"context"
 
+	"github.com/google/go-github/v28/github"
 	"github.com/ridge/bulldozer/pull"
 )
 
@@ -25,6 +26,10 @@ type MockPullContext struct {
 	OwnerValue  string
 	RepoValue   string
 	NumberValue int
+
+	BaseOwnerValue string
+	BaseRepoValue  string
+	BaseRefValue   string
 
 	TitleValue   string
 	BodyValue    string
@@ -58,6 +63,9 @@ type MockPullContext struct {
 	IsTargetedErrValue error
 
 	IsDraftValue bool
+
+	PullRequestsForBranchValue    []*github.PullRequest
+	PullRequestsForBranchErrValue error
 }
 
 func (c *MockPullContext) Owner() string {
@@ -70,6 +78,18 @@ func (c *MockPullContext) Repo() string {
 
 func (c *MockPullContext) Number() int {
 	return c.NumberValue
+}
+
+func (c *MockPullContext) BaseOwner() string {
+	return c.BaseOwnerValue
+}
+
+func (c *MockPullContext) BaseRepo() string {
+	return c.BaseRepoValue
+}
+
+func (c *MockPullContext) BaseRef() string {
+	return c.BaseRefValue
 }
 
 func (c *MockPullContext) Locator() string {
@@ -125,6 +145,10 @@ func (c *MockPullContext) IsTargeted(ctx context.Context) (bool, error) {
 
 func (c *MockPullContext) IsDraft() bool {
 	return c.IsDraftValue
+}
+
+func (c *MockPullContext) PullRequestsForBranch(ctx context.Context) ([]*github.PullRequest, error) {
+	return c.PullRequestsForBranchValue, c.PullRequestsForBranchErrValue
 }
 
 // type assertion

@@ -18,6 +18,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -118,6 +119,45 @@ func TestSignalsMatches(t *testing.T) {
 				assert.False(t, matches, "expected pull request to not match, but it did")
 			}
 			assert.Equal(t, test.Reason, reason)
+		})
+	}
+}
+
+func TestSignalsFailures(t *testing.T) {
+	signals := Signals{
+		Labels:            []string{"LABEL_MERGE"},
+		Comments:          []string{"FULL_COMMENT_PLZ_MERGE"},
+		CommentSubstrings: []string{":+1:"},
+		PRBodySubstrings:  []string{"BODY_MERGE_PLZ"},
+		Branches:          []string{"develop"},
+	}
+
+	ctx := context.Background()
+
+	tests := map[string]struct {
+		PullContext pull.Context
+		Matches     bool
+		Reason      string
+	}{
+		"failureObtainingLabels": {
+			PullContext: &pulltest.MockPullContext{
+				LabelErrValue: errors.New("can't get labels"),
+			},
+			Matches: false,
+		},
+		"failureObtainingComments": {
+			PullContext: &pulltest.MockPullContext{
+				CommentErrValue: errors.New("can't get comments"),
+			},
+			Matches: false,
+		},
+	}
+
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			matches, _, err := signals.Matches(ctx, test.PullContext, "testlist")
+			require.Error(t, err)
+			assert.False(t, matches, "expected pull request to not match, but it did")
 		})
 	}
 }

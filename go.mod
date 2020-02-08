@@ -13,7 +13,7 @@ require (
 	github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316
 	github.com/pkg/errors v0.8.1
 	github.com/ridge/go-githubapp v0.0.0-20200108165722-8460907c26cd
-	github.com/rs/zerolog v1.16.0
+	github.com/rs/zerolog v1.17.2
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/stretchr/testify v1.3.0

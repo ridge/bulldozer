@@ -93,9 +93,6 @@ func (s *Signals) Matches(ctx context.Context, pullCtx pull.Context, tag string)
 	}
 
 	targetBranch, _ := pullCtx.Branches()
-	if err != nil {
-		return false, "unable to get pull request branches", err
-	}
 
 	for _, signalBranch := range s.Branches {
 		if targetBranch == signalBranch {

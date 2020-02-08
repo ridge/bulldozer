@@ -32,6 +32,8 @@ github.com/inconshreveable/mousetrap v1.0.0 h1:Z8tu5sraLXCXIcARxBp/8cbvlwVa7Z1NH
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316 h1:eBZSS2YfVj59wFyLu43KDbMk7tF6RPUlGW7nqOgfV1M=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
+github.com/palantir/go-baseapp v0.0.0-20191218221844-a50fbddfd800 h1:e4d880ndIOAh5DFjAWpRF2OstXgyDdG5/RvyKJUBO9o=
+github.com/palantir/go-baseapp v0.0.0-20191218221844-a50fbddfd800/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

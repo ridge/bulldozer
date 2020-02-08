@@ -18,6 +18,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/google/go-github/v28/github"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -31,6 +32,8 @@ type MockMerger struct {
 
 	DeleteCount int
 	DeleteError error
+
+	ChangeBaseError error
 }
 
 func (m *MockMerger) Merge(ctx context.Context, pullCtx pull.Context, method MergeMethod, msg CommitMessage) (string, error) {
@@ -41,6 +44,10 @@ func (m *MockMerger) Merge(ctx context.Context, pullCtx pull.Context, method Mer
 func (m *MockMerger) DeleteHead(ctx context.Context, pullCtx pull.Context) error {
 	m.DeleteCount++
 	return m.DeleteError
+}
+
+func (m *MockMerger) ChangeBase(ctx context.Context, pullCtx pull.Context, pr *github.PullRequest) error {
+	return m.ChangeBaseError
 }
 
 func TestCalculateCommitTitle(t *testing.T) {

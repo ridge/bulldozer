@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/DataDog/datadog-go v0.0.0-20180330214955-e67964b4021a // indirect
-	github.com/c2h5oh/datasize v0.0.0-20171227191756-4eba002a5eae
+	github.com/c2h5oh/datasize v0.0.0-20200112174442-28bbd4740fee
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/die-net/lrucache v0.0.0-20181227122439-19a39ef22a11
 	github.com/google/go-github/v28 v28.1.1
@@ -17,6 +17,6 @@ require (
 	github.com/spf13/cobra v0.0.3
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/stretchr/testify v1.3.0
-	goji.io/v3 v3.0.0
+	goji.io v2.0.2+incompatible
 	gopkg.in/yaml.v2 v2.2.4
 )

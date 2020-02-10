@@ -9,6 +9,5 @@
   "labels": ["pr-update"],
   "stabilityDays": 3,
 
-  "rebaseStalePrs": true,
   "rebaseLabel": "pr-rebase"
 }

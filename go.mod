@@ -10,7 +10,7 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
 	github.com/palantir/go-baseapp v0.0.0-20191218221844-a50fbddfd800
 	github.com/pkg/errors v0.9.1
-	github.com/ridge/go-githubapp v0.0.0-20200108165722-8460907c26cd
+	github.com/ridge/go-githubapp v0.0.0-20200217200145-c89386be8afd
 	github.com/rs/zerolog v1.18.0
 	github.com/spf13/cobra v0.0.5
 	github.com/stretchr/testify v1.4.0

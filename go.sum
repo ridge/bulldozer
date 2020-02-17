@@ -58,8 +58,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563 h1:dY6ETXrvDG7Sa4vE8ZQG4yqWg6UnOcbqTAahkV813vQ=
 github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
-github.com/ridge/go-githubapp v0.0.0-20200108165722-8460907c26cd h1:0ohFPZRUGBCeBKB2ttG+Giq7GBZzy7myhOtZQSHu6V4=
-github.com/ridge/go-githubapp v0.0.0-20200108165722-8460907c26cd/go.mod h1:9iXr9/mNU8ED7kJKwT2XjI6cyfND1aXtImMw/wjL/+M=
+github.com/ridge/go-githubapp v0.0.0-20200217200145-c89386be8afd h1:yVShorsEaFGQr8Z2bCGjymfSYGey1if2Y1UR5Vy7G5Y=
+github.com/ridge/go-githubapp v0.0.0-20200217200145-c89386be8afd/go.mod h1:RYk5UH1jj7sVR4d516JPxgTxrn9Fzbk+RLjew4/tG84=
 github.com/rs/xid v1.2.1 h1:mhH9Nq+C1fY2l1XIpgxIiUOfNpRBYH1kKcr+qfKgjRc=
 github.com/rs/xid v1.2.1/go.mod h1:+uKXf+4Djp6Md1KODXJxgGQPKngRmWyn10oCKFzNHOQ=
 github.com/rs/zerolog v1.16.0 h1:AaELmZdcJHT8m6oZ5py4213cdFK8XGXkB3dFdAQ+P7Q=

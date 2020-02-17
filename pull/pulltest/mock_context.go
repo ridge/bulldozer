@@ -17,7 +17,7 @@ package pulltest
 import (
 	"context"
 
-	"github.com/google/go-github/v28/github"
+	"github.com/google/go-github/v29/github"
 	"github.com/ridge/bulldozer/pull"
 )
 

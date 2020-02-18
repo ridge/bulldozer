@@ -13,7 +13,7 @@ require (
 	github.com/ridge/go-githubapp v0.0.0-20200217200145-c89386be8afd
 	github.com/rs/zerolog v1.18.0
 	github.com/spf13/cobra v0.0.5
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.0
 	goji.io v2.0.2+incompatible
 	gopkg.in/yaml.v2 v2.2.8
 )

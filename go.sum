@@ -88,8 +88,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRW
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316 h1:eBZSS2YfVj59wFyLu43KDbMk7tF6RPUlGW7nqOgfV1M=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
-github.com/palantir/go-baseapp v0.0.0-20200225170717-433c7ac9d904 h1:QSr3p2/7Jh0+sNCmJZwv9gKc2RFxD43moWee+clttAc=
-github.com/palantir/go-baseapp v0.0.0-20200225170717-433c7ac9d904/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
+github.com/palantir/go-baseapp v0.0.0-20200310093124-ab7e7ece13ff h1:goJeJqzfPzBpBosb76tv0jl3j/ZVg0BfCZ29pGQ2m6U=
+github.com/palantir/go-baseapp v0.0.0-20200310093124-ab7e7ece13ff/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=

@@ -330,7 +330,7 @@ The app should be subscribed to these events:
 ### Operations
 
 bulldozer uses [go-baseapp](https://github.com/palantir/go-baseapp) and
-[go-githubapp](https://github.com/ridge/go-githubapp), both of which emit
+[go-githubapp](https://github.com/ridge/go-githubapp/v30), both of which emit
 standard metrics and structured log keys. Please see those projects for
 details.
 

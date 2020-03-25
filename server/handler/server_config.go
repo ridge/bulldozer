@@ -17,9 +17,9 @@ package handler
 import (
 	"context"
 
-	"github.com/google/go-github/v29/github"
+	"github.com/google/go-github/v30/github"
 	"github.com/pkg/errors"
-	"github.com/ridge/go-githubapp/githubapp"
+	"github.com/ridge/go-githubapp/v30/githubapp"
 	"github.com/rs/zerolog"
 
 	"github.com/ridge/bulldozer/bulldozer"

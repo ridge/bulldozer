@@ -21,7 +21,7 @@ import (
 	"github.com/palantir/go-baseapp/baseapp"
 	"github.com/palantir/go-baseapp/baseapp/datadog"
 	"github.com/pkg/errors"
-	"github.com/ridge/go-githubapp/githubapp"
+	"github.com/ridge/go-githubapp/v30/githubapp"
 	"gopkg.in/yaml.v2"
 
 	"github.com/ridge/bulldozer/bulldozer"

@@ -50,8 +50,6 @@ type Options struct {
 	ConfigurationPath        string            `yaml:"configuration_path"`
 	DefaultRepositoryConfig  *bulldozer.Config `yaml:"default_repository_config"`
 	PushRestrictionUserToken string            `yaml:"push_restriction_user_token"`
-
-	ConfigurationV0Paths []string `yaml:"configuration_v0_paths"`
 }
 
 func ParseConfig(bytes []byte) (*Config, error) {

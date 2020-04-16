@@ -34,7 +34,8 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 		return false, nil
 	}
 
-	if !updateConfig.Blacklist.Enabled() && !updateConfig.Whitelist.Enabled() {
+	if !updateConfig.Blacklist.Enabled() && !updateConfig.Whitelist.Enabled() && len(updateConfig.RequiredStatuses) == 0 {
+		logger.Info().Msgf("%s is not updated due to missing update conditions in config file", pullCtx.Locator())
 		return false, nil
 	}
 

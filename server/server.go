@@ -75,7 +75,7 @@ func New(c *Config) (*Server, error) {
 
 	serverConfig := &handler.ServerConfig{
 		ClientCreator: clientCreator,
-		ConfigFetcher: bulldozer.NewConfigFetcher(c.Options.ConfigurationPath, c.Options.ConfigurationV0Paths, c.Options.DefaultRepositoryConfig),
+		ConfigFetcher: bulldozer.NewConfigFetcher(c.Options.ConfigurationPath, c.Options.DefaultRepositoryConfig),
 
 		PushRestrictionUserToken: c.Options.PushRestrictionUserToken,
 	}

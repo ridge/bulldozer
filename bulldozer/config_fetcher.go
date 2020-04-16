@@ -52,14 +52,12 @@ func (fc FetchedConfig) String() string {
 
 type ConfigFetcher struct {
 	configurationV1Path     string
-	configurationV0Paths    []string
 	defaultRepositoryConfig *Config
 }
 
-func NewConfigFetcher(configurationV1Path string, configurationV0Paths []string, defaultRepositoryConfig *Config) ConfigFetcher {
+func NewConfigFetcher(configurationV1Path string, defaultRepositoryConfig *Config) ConfigFetcher {
 	return ConfigFetcher{
 		configurationV1Path:     configurationV1Path,
-		configurationV0Paths:    configurationV0Paths,
 		defaultRepositoryConfig: defaultRepositoryConfig,
 	}
 }
@@ -85,23 +83,7 @@ func (cf *ConfigFetcher) ConfigForPR(ctx context.Context, client *github.Client,
 			return fc, nil
 		}
 	}
-	logger.Debug().Err(err).Msgf("v1 configuration was missing or invalid, falling back to v0 or server configuration")
-
-	for _, configV0Path := range cf.configurationV0Paths {
-		bytes, err := cf.fetchConfigContents(ctx, client, fc.Owner, fc.Repo, fc.Ref, configV0Path)
-		if err != nil || bytes == nil {
-			continue
-		}
-
-		config, err := cf.unmarshalConfigV0(bytes)
-		if err != nil {
-			continue
-		}
-
-		logger.Debug().Msgf("Found v0 configuration at %s", configV0Path)
-		fc.Config = config
-		return fc, nil
-	}
+	logger.Debug().Err(err).Msgf("v1 configuration was missing or invalid, falling back to server configuration")
 
 	if cf.defaultRepositoryConfig != nil {
 		logger.Debug().Msgf("No repository configuration found, using server-provided default")
@@ -151,84 +133,6 @@ func (cf *ConfigFetcher) unmarshalConfig(bytes []byte) (*Config, error) {
 
 	if config.Version != 1 {
 		return nil, errors.Errorf("unexpected version '%d', expected 1", config.Version)
-	}
-
-	return &config, nil
-}
-
-func (cf *ConfigFetcher) unmarshalConfigV0(bytes []byte) (*Config, error) {
-	var configv0 ConfigV0
-	var config Config
-	if err := yaml.UnmarshalStrict(bytes, &configv0); err != nil {
-		return nil, errors.Wrapf(err, "failed to unmarshal v0 configuration")
-	}
-
-	switch configv0.Mode {
-	case ModeWhitelistV0:
-		config = Config{
-			Version: 1,
-			Update: UpdateConfig{
-				Whitelist: Signals{
-					Labels: []string{"update me", "update-me", "update_me"},
-				},
-			},
-			Merge: MergeConfig{
-				Whitelist: Signals{
-					Labels: []string{"merge when ready", "merge-when-ready", "merge_when_ready"},
-				},
-				DeleteAfterMerge: configv0.DeleteAfterMerge,
-				Method:           configv0.Strategy,
-			},
-		}
-		if config.Merge.Method == SquashAndMerge {
-			config.Merge.Options.Squash = &SquashOptions{
-				Body: SummarizeCommits,
-			}
-		}
-	case ModeBlacklistV0:
-		config = Config{
-			Version: 1,
-			Update: UpdateConfig{
-				Whitelist: Signals{
-					Labels: []string{"update me", "update-me", "update_me"},
-				},
-			},
-			Merge: MergeConfig{
-				Blacklist: Signals{
-					Labels: []string{"wip", "do not merge", "do-not-merge", "do_not_merge"},
-				},
-				DeleteAfterMerge: configv0.DeleteAfterMerge,
-				Method:           configv0.Strategy,
-			},
-		}
-		if config.Merge.Method == SquashAndMerge {
-			config.Merge.Options.Squash = &SquashOptions{
-				Body: SummarizeCommits,
-			}
-		}
-	case ModeBodyV0:
-		config = Config{
-			Version: 1,
-			Update: UpdateConfig{
-				Whitelist: Signals{
-					Labels: []string{"update me", "update-me", "update_me"},
-				},
-			},
-			Merge: MergeConfig{
-				Whitelist: Signals{
-					CommentSubstrings: []string{"==MERGE_WHEN_READY=="},
-				},
-				DeleteAfterMerge: configv0.DeleteAfterMerge,
-				Method:           configv0.Strategy,
-			},
-		}
-		if config.Merge.Method == SquashAndMerge {
-			config.Merge.Options.Squash = &SquashOptions{
-				Body:             PullRequestBody,
-				MessageDelimiter: "==COMMIT_MSG==",
-			}
-		}
-	default:
 	}
 
 	return &config, nil

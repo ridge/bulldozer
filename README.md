@@ -137,7 +137,7 @@ merge:
       message_delimiter: ==COMMIT_MSG==
 
       # If "body" is "pull_request_body", then the commit message will be the
-      # part of the pull request body before "message delimiter" string.
+      # part of the pull request body before "message_end_marker" string.
       # If enabled, takes precedence over "message_delimiter". Disabled by
       # default.
       message_end_marker: "---\n"

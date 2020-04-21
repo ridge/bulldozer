@@ -140,7 +140,7 @@ merge:
       # part of the pull request body before "message_end_marker" string.
       # If enabled, takes precedence over "message_delimiter". Disabled by
       # default.
-      message_end_marker: "---\n"
+      message_end_marker: "\n---\n"
 
   # "required_statuses" is a list of additional status contexts that must pass
   # before bulldozer can merge a pull request. This is useful if you want to

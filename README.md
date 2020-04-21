@@ -136,6 +136,12 @@ merge:
       # strings. This is disabled (empty string) by default.
       message_delimiter: ==COMMIT_MSG==
 
+      # If "body" is "pull_request_body", then the commit message will be the
+      # part of the pull request body before "message delimiter" string.
+      # If enabled, takes precedence over "message_delimiter". Disabled by
+      # default.
+      message_end_marker: "---\n"
+
   # "required_statuses" is a list of additional status contexts that must pass
   # before bulldozer can merge a pull request. This is useful if you want to
   # require extra testing for automated merges, but not for manual merges.

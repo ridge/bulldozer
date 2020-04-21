@@ -119,6 +119,7 @@ func TestCalculateCommitMessage(t *testing.T) {
 		PullContext pull.Context
 		Strategy    MessageStrategy
 		Delimiter   string
+		EndMarker   string
 		Output      string
 	}{
 		"emptyBody": {
@@ -150,13 +151,27 @@ func TestCalculateCommitMessage(t *testing.T) {
 			Delimiter:   "~~",
 			Output:      "",
 		},
+		"pullRequestBodyEndMarker": {
+			PullContext: &pulltest.MockPullContext{
+				BodyValue: "Body...\n~~\nSuffix...",
+			},
+			Strategy:  PullRequestBody,
+			EndMarker: "~~\n",
+			Output:    "Body...\n",
+		},
+		"pullRequestBodyNoEndMarker": {
+			PullContext: defaultPullContext,
+			Strategy:    PullRequestBody,
+			EndMarker:   "~~\n",
+			Output:      "This is the PR body!",
+		},
 	}
 
 	ctx := context.Background()
 
 	for name, test := range tests {
 		t.Run(name, func(t *testing.T) {
-			output, err := calculateCommitMessage(ctx, test.PullContext, SquashOptions{Body: test.Strategy, MessageDelimiter: test.Delimiter})
+			output, err := calculateCommitMessage(ctx, test.PullContext, SquashOptions{Body: test.Strategy, MessageDelimiter: test.Delimiter, MessageEndMarker: test.EndMarker})
 			require.NoError(t, err)
 			assert.Equal(t, test.Output, output, "calculated body is incorrect")
 		})

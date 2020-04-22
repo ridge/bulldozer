@@ -56,6 +56,7 @@ type MergeOptions struct {
 type SquashOptions struct {
 	Title            TitleStrategy   `yaml:"title"`
 	Body             MessageStrategy `yaml:"body"`
+	MessageEndMarker string          `yaml:"message_end_marker"`
 	MessageDelimiter string          `yaml:"message_delimiter"`
 }
 

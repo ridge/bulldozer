@@ -302,7 +302,11 @@ func calculateCommitMessage(ctx context.Context, pullCtx pull.Context, option Sq
 	commitMessage := ""
 	switch option.Body {
 	case PullRequestBody:
-		if option.MessageDelimiter != "" {
+		switch {
+		case option.MessageEndMarker != "":
+			parts := strings.SplitN(pullCtx.Body(), option.MessageEndMarker, 2)
+			commitMessage = parts[0]
+		case option.MessageDelimiter != "":
 			var quotedDelimiter = regexp.QuoteMeta(option.MessageDelimiter)
 			var rString = fmt.Sprintf(`(?sm:(%s\s*)^(.*)$(\s*%s))`, quotedDelimiter, quotedDelimiter)
 			matcher, err := regexp.Compile(rString)
@@ -313,7 +317,7 @@ func calculateCommitMessage(ctx context.Context, pullCtx pull.Context, option Sq
 			if m := matcher.FindStringSubmatch(pullCtx.Body()); len(m) == 4 {
 				commitMessage = m[2]
 			}
-		} else {
+		default:
 			commitMessage = pullCtx.Body()
 		}
 	case SummarizeCommits:

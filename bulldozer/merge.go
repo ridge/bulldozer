@@ -189,6 +189,15 @@ func MergePR(ctx context.Context, pullCtx pull.Context, merger Merger, mergeConf
 		if err != nil {
 			return errors.Wrap(err, "failed to calculate commit message")
 		}
+		// github-go erroneously omits commit message from the request
+		// if it is an empty string. This causes GitHub to fill in a
+		// default merge commit message (summary of all commits in the
+		// PR).
+		//
+		// Work around this problem.
+		if message == "" {
+			message = " "
+		}
 		commitMsg.Message = message
 
 		title, err := calculateCommitTitle(ctx, pullCtx, *opt)

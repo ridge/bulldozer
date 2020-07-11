@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"regexp"
 
 	"github.com/google/go-github/v30/github"
 	"github.com/pkg/errors"
@@ -133,6 +134,27 @@ func (cf *ConfigFetcher) unmarshalConfig(bytes []byte) (*Config, error) {
 
 	if config.Version != 1 {
 		return nil, errors.Errorf("unexpected version '%d', expected 1", config.Version)
+	}
+
+	if config.Merge.Options.Squash != nil {
+		s := config.Merge.Options.Squash
+		delim := 0
+
+		if s.MessageEndMarkerRx != "" {
+			if _, err := regexp.Compile(s.MessageEndMarkerRx); err != nil {
+				return nil, errors.Errorf("invalid syntax of message_end_marker_rx: %v", err)
+			}
+			delim++
+		}
+		if s.MessageEndMarker != "" {
+			delim++
+		}
+		if s.MessageDelimiter != "" {
+			delim++
+		}
+		if delim > 1 {
+			return nil, errors.New("only one of message_end_marker_rx, message_end_marker, message_delimiter_rx, message_delimiter can be set")
+		}
 	}
 
 	return &config, nil

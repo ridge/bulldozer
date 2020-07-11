@@ -131,16 +131,20 @@ merge:
       # "summarize_commits", and "empty_body". The default is "empty_body".
       body: "empty_body"
 
+      # Only one of message_delimiter, message_end_marker[_rx] can be set.
+
       # If "body" is "pull_request_body", then the commit message will be the
       # part of the pull request body surrounded by "message_delimiter"
-      # strings. This is disabled (empty string) by default.
-      message_delimiter: ==COMMIT_MSG==
+      # strings. This is disabled by default.
+      message_delimiter: "==COMMIT_MSG=="
 
       # If "body" is "pull_request_body", then the commit message will be the
       # part of the pull request body before "message_end_marker" string.
-      # If enabled, takes precedence over "message_delimiter". Disabled by
-      # default.
+      # This is disabled by default.
       message_end_marker: "\n---\n"
+
+      # Same as message_end_marker, but a regexp, not a fixed string.
+      message_end_marker_rx: "\r?\n---\r?\n"
 
   # "required_statuses" is a list of additional status contexts that must pass
   # before bulldozer can merge a pull request. This is useful if you want to

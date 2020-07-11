@@ -315,6 +315,10 @@ func calculateCommitMessage(ctx context.Context, pullCtx pull.Context, option Sq
 		case option.MessageEndMarker != "":
 			parts := strings.SplitN(pullCtx.Body(), option.MessageEndMarker, 2)
 			commitMessage = parts[0]
+		case option.MessageEndMarkerRx != "":
+			rx := regexp.MustCompile(option.MessageEndMarkerRx)
+			parts := rx.Split(pullCtx.Body(), 2)
+			commitMessage = parts[0]
 		case option.MessageDelimiter != "":
 			var quotedDelimiter = regexp.QuoteMeta(option.MessageDelimiter)
 			var rString = fmt.Sprintf(`(?sm:(%s\s*)^(.*)$(\s*%s))`, quotedDelimiter, quotedDelimiter)

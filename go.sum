@@ -13,6 +13,8 @@ github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973/go.mod h1:Dwedo/Wpr24
 github.com/beorn7/perks v1.0.0/go.mod h1:KWe93zE9D1o94FZ5RNwFwVgaQK1VOXiVxmqh+CedLV8=
 github.com/bluekeyes/hatpear v0.0.0-20180714193905-ffb42d5bb417 h1:8rYOiy08UqIuWFJrC+d6xKFbcRXlxacWKzi1Ttt2sPc=
 github.com/bluekeyes/hatpear v0.0.0-20180714193905-ffb42d5bb417/go.mod h1:D+WOahrNtu6OK0KiVoXY9h5j7IcEs5LYke+zJkMBsKg=
+github.com/bluekeyes/hatpear v0.1.1 h1:FA5diKynoYJi6YVTJPEDbe4MG6eA8h+7LYHUlm8bppc=
+github.com/bluekeyes/hatpear v0.1.1/go.mod h1:2bh+rl4wLhqzzL0hT7Q4SVGXIivrE8oKgH2WYM3ubt0=
 github.com/bradleyfalzon/ghinstallation v1.1.0 h1:mwazVinJU0mPyLxIcdtJzu4DhWXFO5lMsWhKyFRIwFk=
 github.com/bradleyfalzon/ghinstallation v1.1.0/go.mod h1:p7iD8KytOOKg2wCqbwvJlq4JGpYMjwjkiqdyUqOIHLI=
 github.com/c2h5oh/datasize v0.0.0-20200112174442-28bbd4740fee h1:BnPxIde0gjtTnc9Er7cxvBk8DHLWhEux0SxayC8dP6I=
@@ -94,8 +96,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRW
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316 h1:eBZSS2YfVj59wFyLu43KDbMk7tF6RPUlGW7nqOgfV1M=
 github.com/palantir/go-baseapp v0.0.0-20191009233133-803ee9113316/go.mod h1:tflQ4JA/PNb9xPyPgUupnfJg+sBdHcxuzAE0lkGPjbI=
-github.com/palantir/go-baseapp v0.2.0 h1:EruWj7lBB7koSLuUjWRvNoIXdmowmLGj+rqiuoTnjgs=
-github.com/palantir/go-baseapp v0.2.0/go.mod h1:7rEjgYzWbHLLuY+mV2iJthxTddEc6aO+kFYsjDKNmEs=
+github.com/palantir/go-baseapp v0.2.1 h1:9dTuuFgLum5zgdhhhTLVO9VmjdHIgMylygeWDKvF5pE=
+github.com/palantir/go-baseapp v0.2.1/go.mod h1:vQuqaqAh5XRwfllV8eJBs2fDczpOvOPAoLlJ+kVsF9A=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=

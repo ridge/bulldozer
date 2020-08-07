@@ -264,8 +264,8 @@ func TestShouldMerge(t *testing.T) {
 
 	t.Run("failClosedOnSuccessStatusCheckErr", func(t *testing.T) {
 		pc := &pulltest.MockPullContext{
-			LabelValue:              []string{"LABEL_MERGE"},
-			SuccessStatusesErrValue: errors.New("failure"),
+			LabelValue:       []string{"LABEL_MERGE"},
+			StatusesErrValue: errors.New("failure"),
 		}
 
 		actualShouldMerge, err := ShouldMergePR(ctx, pc, mergeConfig)

@@ -66,7 +66,8 @@ type UpdateConfig struct {
 	Blacklist Signals `yaml:"blacklist"`
 
 	// Status checks to require for update
-	RequiredStatuses []string `yaml:"required_statuses"`
+	RequiredStatuses                     []string            `yaml:"required_statuses"`
+	RequiredStatusesDescriptionWhitelist map[string][]string `yaml:"required_statuses_description_whitelist"`
 
 	DraftUpdate bool `yaml:"draft_update"`
 }

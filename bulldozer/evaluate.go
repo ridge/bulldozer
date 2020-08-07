@@ -101,7 +101,7 @@ func ShouldMergePR(ctx context.Context, pullCtx pull.Context, mergeConfig MergeC
 	}
 	requiredStatuses = append(requiredStatuses, mergeConfig.RequiredStatuses...)
 
-	successStatuses, err := pullCtx.CurrentSuccessStatuses(ctx)
+	successStatuses, _, err := pullCtx.CurrentStatuses(ctx)
 	if err != nil {
 		return false, errors.Wrap(err, "failed to determine currently successful status checks")
 	}

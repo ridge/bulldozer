@@ -29,8 +29,7 @@ import (
 
 func statusDescriptionWhitelisted(description string, whitelist []string) bool {
 	for _, rx := range whitelist {
-		rx := regexp.MustCompile(rx)
-		if rx.MatchString(description) {
+		if regexp.MustCompile(rx).MatchString(description) {
 			return true
 		}
 	}

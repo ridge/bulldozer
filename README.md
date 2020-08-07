@@ -181,6 +181,14 @@ update:
   required_statuses:
     - "code-review/reviewable"
 
+  # "required_statuses_description_whitelist" is a list of regexps that mark the
+  # statuses as passing for Bulldozer based on content of their descriptions.
+  # This is useful if you need to have a status that blocks a merge, but still
+  # allows Bulldozer to update the branch.
+  required_statuses_description_whitelist:
+    "ci/circleci: ete-tests":
+      - "\n0 failures\n"
+
   # "draft_update" controls whether to update draft PRs or not, defaults to
   # false.
   draft_update: false

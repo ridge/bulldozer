@@ -16,6 +16,7 @@ package bulldozer
 
 import (
 	"context"
+	"regexp"
 	"strings"
 	"time"
 
@@ -25,6 +26,16 @@ import (
 
 	"github.com/ridge/bulldozer/pull"
 )
+
+func statusDescriptionWhitelisted(description string, whitelist []string) bool {
+	for _, rx := range whitelist {
+		rx := regexp.MustCompile(rx)
+		if rx.MatchString(description) {
+			return true
+		}
+	}
+	return false
+}
 
 func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig UpdateConfig) (bool, error) {
 	logger := zerolog.Ctx(ctx)
@@ -64,9 +75,20 @@ func ShouldUpdatePR(ctx context.Context, pullCtx pull.Context, updateConfig Upda
 	}
 
 	if len(updateConfig.RequiredStatuses) > 0 {
-		successStatuses, err := pullCtx.CurrentSuccessStatuses(ctx)
+		successStatuses, failedStatuses, err := pullCtx.CurrentStatuses(ctx)
 		if err != nil {
 			return false, errors.Wrapf(err, "failed to determine currently successful status checks for pull request %s", pullCtx.Locator())
+		}
+
+		for statusName, whitelist := range updateConfig.RequiredStatusesDescriptionWhitelist {
+			statusDescription, hasStatus := failedStatuses[statusName]
+			if !hasStatus {
+				continue
+			}
+
+			if statusDescriptionWhitelisted(statusDescription, whitelist) {
+				successStatuses = append(successStatuses, statusName)
+			}
 		}
 
 		unsatisfiedStatuses := setDifference(updateConfig.RequiredStatuses, successStatuses)

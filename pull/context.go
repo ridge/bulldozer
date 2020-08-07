@@ -68,9 +68,9 @@ type Context interface {
 	// restricts the users or teams that have push access.
 	PushRestrictions(ctx context.Context) (bool, error)
 
-	// CurrentSuccessStatuses returns the names of all currently
-	// successful status checks for the pull request.
-	CurrentSuccessStatuses(ctx context.Context) ([]string, error)
+	// CurrentStatuses returns the names of all successful status checks for the pull request
+	// and names and descriptions of all failed status checks.
+	CurrentStatuses(ctx context.Context) ([]string, map[string]string, error)
 
 	// Comments lists all comments on the pull request.
 	Comments(ctx context.Context) ([]string, error)

@@ -3,7 +3,7 @@ module github.com/ridge/bulldozer
 go 1.13
 
 require (
-	github.com/c2h5oh/datasize v0.0.0-20200112174442-28bbd4740fee
+	github.com/c2h5oh/datasize v0.0.0-20200825124411-48ed595a09d2
 	github.com/die-net/lrucache v0.0.0-20190707192454-883874fe3947
 	github.com/google/go-github/v30 v30.1.0
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79

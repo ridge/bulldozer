@@ -5,6 +5,7 @@ check-go-mod:
 	@go mod tidy
 	@if [ -n "$$(git status --porcelain)" ]; then \
 		git status -v; \
+		git diff; \
 		exit 1; \
 	fi
 

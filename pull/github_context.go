@@ -38,6 +38,7 @@ type GithubContext struct {
 	commits          []*Commit
 	branchProtection *github.Protection
 	successStatuses  []string
+	failedStatuses   map[string]string
 }
 
 func NewGithubContext(client *github.Client, pr *github.PullRequest) Context {
@@ -201,15 +202,16 @@ func isNotFound(err error) bool {
 	return ok && rerr.Response.StatusCode == http.StatusNotFound
 }
 
-func (ghc *GithubContext) CurrentSuccessStatuses(ctx context.Context) ([]string, error) {
+func (ghc *GithubContext) CurrentStatuses(ctx context.Context) ([]string, map[string]string, error) {
 	if ghc.successStatuses == nil {
 		opts := &github.ListOptions{PerPage: 100}
 		var successStatuses []string
+		var failedStatuses map[string]string
 
 		for {
 			combinedStatus, res, err := ghc.client.Repositories.GetCombinedStatus(ctx, ghc.owner, ghc.repo, ghc.pr.GetHead().GetSHA(), opts)
 			if err != nil {
-				return ghc.successStatuses, errors.Wrapf(err, "cannot get combined status for SHA %s on %s", ghc.pr.GetHead().GetSHA(), ghc.Locator())
+				return nil, nil, errors.Wrapf(err, "cannot get combined status for SHA %s on %s", ghc.pr.GetHead().GetSHA(), ghc.Locator())
 			}
 
 			for _, s := range combinedStatus.Statuses {
@@ -228,7 +230,7 @@ func (ghc *GithubContext) CurrentSuccessStatuses(ctx context.Context) ([]string,
 		for {
 			checkRuns, res, err := ghc.client.Checks.ListCheckRunsForRef(ctx, ghc.owner, ghc.repo, ghc.pr.GetHead().GetSHA(), checkOpts)
 			if err != nil {
-				return ghc.successStatuses, errors.Wrapf(err, "cannot get check runs for SHA %s on %s", ghc.pr.GetHead().GetSHA(), ghc.Locator())
+				return nil, nil, errors.Wrapf(err, "cannot get check runs for SHA %s on %s", ghc.pr.GetHead().GetSHA(), ghc.Locator())
 			}
 
 			for _, s := range checkRuns.CheckRuns {
@@ -244,9 +246,10 @@ func (ghc *GithubContext) CurrentSuccessStatuses(ctx context.Context) ([]string,
 		}
 
 		ghc.successStatuses = successStatuses
+		ghc.failedStatuses = failedStatuses
 	}
 
-	return ghc.successStatuses, nil
+	return ghc.successStatuses, ghc.failedStatuses, nil
 }
 
 func (ghc *GithubContext) Branches() (base string, head string) {

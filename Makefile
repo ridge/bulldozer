@@ -1,12 +1,18 @@
 check: check-go-mod check-vet check-test
 
+STABLE_GO_VERSION=1.15.x
+
 check-go-mod:
 	@echo CHECK GO.MOD/GO.SUM
-	@go mod tidy
-	@if [ -n "$$(git status --porcelain)" ]; then \
-		git status -v; \
-		git diff; \
-		exit 1; \
+	@if [ "x$$TRAVIS_GO_VERSION" != "x$(STABLE_GO_VERSION)" ]; then \
+		echo "Skipping, not a current stable version"; \
+	else \
+		go mod tidy; \
+		if [ -n "$$(git status --porcelain)" ]; then \
+			git status -v; \
+			gdt diff; \
+			exit 1; \
+		fi; \
 	fi
 
 check-vet:

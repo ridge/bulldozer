@@ -1,8 +1,10 @@
 check: check-go-mod check-vet check-test
 
+STABLE_GO_VERSION=1.15.x
+
 check-go-mod:
 	@echo CHECK GO.MOD/GO.SUM
-	@if [ "x$$TRAVIS_GO_VERSION" != x1.15.x ]; then \
+	@if [ "x$$TRAVIS_GO_VERSION" != "x$(STABLE_GO_VERSION)" ]; then \
 		echo "Skipping, not a current stable version"; \
 	else \
 		go mod tidy; \

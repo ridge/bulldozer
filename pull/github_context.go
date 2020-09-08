@@ -217,6 +217,8 @@ func (ghc *GithubContext) CurrentStatuses(ctx context.Context) ([]string, map[st
 			for _, s := range combinedStatus.Statuses {
 				if s.GetState() == "success" {
 					successStatuses = append(successStatuses, s.GetContext())
+				} else {
+					failedStatuses[s.GetContext()] = s.GetDescription()
 				}
 			}
 
@@ -236,6 +238,8 @@ func (ghc *GithubContext) CurrentStatuses(ctx context.Context) ([]string, map[st
 			for _, s := range checkRuns.CheckRuns {
 				if s.GetConclusion() == "success" {
 					successStatuses = append(successStatuses, s.GetName())
+				} else {
+					failedStatuses[s.GetName()] = s.GetStatus()
 				}
 			}
 

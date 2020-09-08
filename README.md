@@ -1,6 +1,6 @@
 # bulldozer
 
-[![Download](https://api.bintray.com/packages/palantir/releases/bulldozer/images/download.svg)](https://bintray.com/palantir/releases/bulldozer/_latestVersion) [![Docker Pulls](https://img.shields.io/docker/pulls/palantirtechnologies/bulldozer.svg)](https://hub.docker.com/r/palantirtechnologies/bulldozer/)
+This repository is a [Ridge](https://ridge.co/)'s fork of Bulldozer by Palantir.
 
 `bulldozer` is a [GitHub App](https://developer.github.com/apps/) that
 automatically merges pull requests (PRs) when (and only when) all required
@@ -21,8 +21,6 @@ Bulldozer might be useful if you:
 - Have CI builds that take longer than the normal review process. It will merge
   reviewed PRs as soon as the tests pass so you don't have to watch the pull
   request or remember to merge it later.
-- Combine it with [policy-bot](https://github.com/palantir/policy-bot) to
-  automatically merge certain types of pre-approved or automated changes.
 - Want to give contributors more control over when they can merge PRs without
   granting them write access to the repository.
 - Have a lot of active development that makes it difficult to merge a pull
@@ -281,12 +279,7 @@ request.
 As mentioned above, GitHub Apps cannot be added to the list of users associated
 with [push restrictions][]. To work around this, you can:
 
-1. Use another app like [policy-bot](https://github.com/palantir/policy-bot) to
-   implement _approval_ restrictions as required status checks instead of using
-   push restrictions. This effectively limits who can push to a branch by
-   requiring changes to go through the pull request process and be approved.
-
-2. Configure Bulldozer to use a personal access token for a regular user to
+1. Configure Bulldozer to use a personal access token for a regular user to
    perform merges in this case. The token must have the `repo` scope and the
    user must be allowed to push to the branch. In the server configuration
    file, set:
@@ -304,11 +297,6 @@ with [push restrictions][]. To work around this, you can:
 bulldozer is easy to deploy in your own environment as it has no dependencies
 other than GitHub. It is also safe to run multiple instances of the server,
 making it a good fit for container schedulers like Nomad or Kubernetes.
-
-We provide both a Docker container and a binary distribution of the server:
-
-- Binaries: https://bintray.com/palantir/releases/bulldozer
-- Docker Images: https://hub.docker.com/r/palantirtechnologies/bulldozer/
 
 A sample configuration file is provided at `config/bulldozer.example.yml`.
 Certain values may also be set by environment variables; these are noted in the
@@ -354,7 +342,7 @@ details.
 
 ### Example Files
 
-Example `.bulldozer.yml` files can be found in [`config/examples`](https://github.com/palantir/bulldozer/tree/develop/config/examples)
+Example `.bulldozer.yml` files can be found in `config/examples`.
 
 ### Migrating: Version 0.4.X to 1.X
 
@@ -393,7 +381,7 @@ To develop `bulldozer`, you will need a [Go installation](https://golang.org/doc
     # build the docker image
     ./godelw docker build --verbose
 
-    docker run --rm -v "$(pwd)/config:/secrets/" -p 8080:8080 palantirtechnologies/bulldozer:latest
+    docker run --rm -v "$(pwd)/config:/secrets/" -p 8080:8080 bulldozer:latest
 
 - This mounts the `config` directory (which should contain the `bulldozer.yml` configuration file) at the expected location
 - The server is available at `http://localhost:8080/`

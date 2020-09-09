@@ -206,7 +206,7 @@ func (ghc *GithubContext) CurrentStatuses(ctx context.Context) ([]string, map[st
 	if ghc.successStatuses == nil {
 		opts := &github.ListOptions{PerPage: 100}
 		var successStatuses []string
-		var failedStatuses map[string]string
+		failedStatuses := map[string]string{}
 
 		for {
 			combinedStatus, res, err := ghc.client.Repositories.GetCombinedStatus(ctx, ghc.owner, ghc.repo, ghc.pr.GetHead().GetSHA(), opts)

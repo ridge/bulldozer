@@ -20,7 +20,7 @@ import (
 	"net/http"
 	"regexp"
 
-	"github.com/google/go-github/v30/github"
+	"github.com/google/go-github/v33/github"
 	"github.com/pkg/errors"
 	"github.com/ridge/bulldozer/pull"
 	"github.com/rs/zerolog"

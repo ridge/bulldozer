@@ -22,8 +22,8 @@ import (
 	"github.com/gregjones/httpcache"
 	"github.com/palantir/go-baseapp/baseapp"
 	"github.com/palantir/go-baseapp/baseapp/datadog"
+	"github.com/palantir/go-githubapp/githubapp"
 	"github.com/pkg/errors"
-	"github.com/ridge/go-githubapp/v30/githubapp"
 	"github.com/rs/zerolog"
 	"goji.io/pat"
 

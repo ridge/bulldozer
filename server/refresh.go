@@ -20,7 +20,7 @@ func listRepos(ctx context.Context, client *github.Client) ([]*github.Repository
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to list repositories")
 		}
-		repositories = append(repositories, pageRepositories...)
+		repositories = append(repositories, pageRepositories.Repositories...)
 		if res.NextPage == 0 {
 			break
 		}

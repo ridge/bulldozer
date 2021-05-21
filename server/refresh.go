@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"github.com/google/go-github/v33/github"
+	"github.com/google/go-github/v35/github"
 	"github.com/palantir/go-githubapp/githubapp"
 	"github.com/pkg/errors"
 	"github.com/ridge/bulldozer/pull"
@@ -20,7 +20,7 @@ func listRepos(ctx context.Context, client *github.Client) ([]*github.Repository
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to list repositories")
 		}
-		repositories = append(repositories, pageRepositories...)
+		repositories = append(repositories, pageRepositories.Repositories...)
 		if res.NextPage == 0 {
 			break
 		}

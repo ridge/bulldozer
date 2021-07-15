@@ -232,6 +232,8 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/palantir/go-baseapp v0.2.3 h1:Wi24/LST/cD8qWXtTTgBbeQP4n1kP3164yWoHHeQxYY=
 github.com/palantir/go-baseapp v0.2.3/go.mod h1:TSsvmXBDAAu2wZJgWi1/nG+YM5xIOEsXFmLsNoGP5O4=
+github.com/palantir/go-baseapp v0.2.4 h1:OtF5jipUF62ZRjLMLODZ2Rq180Kaekqm4pNOUZdOfAU=
+github.com/palantir/go-baseapp v0.2.4/go.mod h1:TSsvmXBDAAu2wZJgWi1/nG+YM5xIOEsXFmLsNoGP5O4=
 github.com/palantir/go-githubapp v0.7.0 h1:kuMTREzEj92aYh7BegFCCzKN4vxt6z0RqiOgAcIjxmE=
 github.com/palantir/go-githubapp v0.7.0/go.mod h1:QYwgje3cWJyi5150rojiG+xwb+d1vR7Rr+JNd2Pz2aE=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=

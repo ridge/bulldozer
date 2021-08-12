@@ -143,9 +143,10 @@ github.com/google/go-cmp v0.5.6/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-github/v29 v29.0.2/go.mod h1:CHKiKKPHJ0REzfwc14QMklvtHwCveD0PxlMjLlzAM5E=
 github.com/google/go-github/v29 v29.0.3 h1:IktKCTwU//aFHnpA+2SLIi7Oo9uhAzgsdZNbcAqhgdc=
 github.com/google/go-github/v29 v29.0.3/go.mod h1:CHKiKKPHJ0REzfwc14QMklvtHwCveD0PxlMjLlzAM5E=
-github.com/google/go-github/v35 v35.1.0/go.mod h1:s0515YVTI+IMrDoy9Y4pHt9ShGpzHvHO8rZ7L7acgvs=
 github.com/google/go-github/v35 v35.3.0 h1:fU+WBzuukn0VssbayTT+Zo3/ESKX9JYWjbZTLOTEyho=
 github.com/google/go-github/v35 v35.3.0/go.mod h1:yWB7uCcVWaUbUP74Aq3whuMySRMatyRmq5U9FTNlbio=
+github.com/google/go-github/v38 v38.0.0 h1:l/BalRp6dmFh/SFbl32RrlaVvbByhxpy+/LY0sv9isM=
+github.com/google/go-github/v38 v38.0.0/go.mod h1:cStvrz/7nFr0FoENgG6GLbp53WaelXucT+BBz/3VKx4=
 github.com/google/go-querystring v1.0.0 h1:Xkwi/a1rcvNg1PPYe5vI8GbeBY/jrVuDX5ASuANWTrk=
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/google/gofuzz v1.0.0/go.mod h1:dBl0BpW6vV/+mYPU4Po3pmUjxk6FQPldtuIdl/M65Eg=
@@ -230,12 +231,10 @@ github.com/mitchellh/mapstructure v1.4.1/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RR
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
 github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
-github.com/palantir/go-baseapp v0.2.3 h1:Wi24/LST/cD8qWXtTTgBbeQP4n1kP3164yWoHHeQxYY=
-github.com/palantir/go-baseapp v0.2.3/go.mod h1:TSsvmXBDAAu2wZJgWi1/nG+YM5xIOEsXFmLsNoGP5O4=
 github.com/palantir/go-baseapp v0.2.4 h1:OtF5jipUF62ZRjLMLODZ2Rq180Kaekqm4pNOUZdOfAU=
 github.com/palantir/go-baseapp v0.2.4/go.mod h1:TSsvmXBDAAu2wZJgWi1/nG+YM5xIOEsXFmLsNoGP5O4=
-github.com/palantir/go-githubapp v0.7.0 h1:kuMTREzEj92aYh7BegFCCzKN4vxt6z0RqiOgAcIjxmE=
-github.com/palantir/go-githubapp v0.7.0/go.mod h1:QYwgje3cWJyi5150rojiG+xwb+d1vR7Rr+JNd2Pz2aE=
+github.com/palantir/go-githubapp v0.9.0 h1:5NmPwIUlEh/t0TOm+QoGMwZsjj2HTpgi2SaXLmFl8Do=
+github.com/palantir/go-githubapp v0.9.0/go.mod h1:+reYl6s23olCHWigIXth27wvl0ckoInmZmY+Cyom0Ls=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

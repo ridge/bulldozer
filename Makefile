@@ -1,6 +1,6 @@
 check: check-go-mod check-vet check-test
 
-STABLE_GO_VERSION=1.15.x
+STABLE_GO_VERSION=1.17.x
 
 check-go-mod:
 	@echo CHECK GO.MOD/GO.SUM

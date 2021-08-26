@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/c2h5oh/datasize v0.0.0-20200825124411-48ed595a09d2
-	github.com/die-net/lrucache v0.0.0-20210724224853-653a274e85b0
+	github.com/die-net/lrucache v0.0.0-20210801000212-e34e67316dc5
 	github.com/google/go-github/v35 v35.3.0
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
 	github.com/palantir/go-baseapp v0.2.4

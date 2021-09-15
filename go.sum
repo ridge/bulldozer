@@ -230,6 +230,8 @@ github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lN
 github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/palantir/go-baseapp v0.2.4 h1:OtF5jipUF62ZRjLMLODZ2Rq180Kaekqm4pNOUZdOfAU=
 github.com/palantir/go-baseapp v0.2.4/go.mod h1:TSsvmXBDAAu2wZJgWi1/nG+YM5xIOEsXFmLsNoGP5O4=
+github.com/palantir/go-baseapp v0.3.0 h1:y4thuz6gR9lGYxNW5Y3DQ2E68OycUGXoP7vj4V7r4xA=
+github.com/palantir/go-baseapp v0.3.0/go.mod h1:TQcLCwDt66VvW7sv8qWg1oHEG9h+K95I5ydHkE2/sRQ=
 github.com/palantir/go-githubapp v0.9.1 h1:XCAKfGshIrwuSmN0nPjj7c6+iHBEtoeRHQ/2/sdKGNA=
 github.com/palantir/go-githubapp v0.9.1/go.mod h1:+reYl6s23olCHWigIXth27wvl0ckoInmZmY+Cyom0Ls=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
@@ -245,6 +247,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/rcrowley/go-metrics v0.0.0-20180503174638-e2704e165165/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0 h1:MkV+77GLUNo5oJ0jf870itWm3D0Sjh7+Za9gazKc5LQ=
 github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
+github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 h1:N/ElC8H3+5XpJzTSTfLsJV/mx9Q9g7kxmchpfZyxgzM=
+github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rs/xid v1.2.1 h1:mhH9Nq+C1fY2l1XIpgxIiUOfNpRBYH1kKcr+qfKgjRc=

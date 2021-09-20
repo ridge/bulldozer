@@ -7,7 +7,7 @@ require (
 	github.com/die-net/lrucache v0.0.0-20210908122246-903d43d14082
 	github.com/google/go-github/v35 v35.3.0
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
-	github.com/palantir/go-baseapp v0.2.4
+	github.com/palantir/go-baseapp v0.3.0
 	github.com/palantir/go-githubapp v0.9.1
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.25.0

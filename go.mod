@@ -10,7 +10,7 @@ require (
 	github.com/palantir/go-baseapp v0.3.0
 	github.com/palantir/go-githubapp v0.9.2
 	github.com/pkg/errors v0.9.1
-	github.com/rs/zerolog v1.25.0
+	github.com/rs/zerolog v1.26.1
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
 	goji.io v2.0.2+incompatible

@@ -19,8 +19,8 @@ import (
 	"os"
 
 	"github.com/palantir/go-baseapp/pkg/errfmt"
-
 	"github.com/ridge/bulldozer/cmd"
+	_ "golang.org/x/crypto/x509roots/fallback"
 )
 
 func main() {

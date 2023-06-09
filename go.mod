@@ -14,5 +14,6 @@ require (
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
 	goji.io v2.0.2+incompatible
+	golang.org/x/crypto/x509roots/fallback v0.0.0-20230609172314-d0b316056be8
 	gopkg.in/yaml.v2 v2.4.0
 )
